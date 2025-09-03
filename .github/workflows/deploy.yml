@@ -10,10 +10,10 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  APP_NAME: ${{ vars.APP_NAME || 'Portfolio_Boris' }}
-  PROJECT_ID: ${{ vars.GCP_PROJECT_ID || 'nine-tones-bots-2025-468320' }}
-  REGION: ${{ vars.AR_REGION || 'us-central1' }}
-  REPOSITORY: ${{ vars.AR_REPO_NAME || 'tasty-ar' }}
+  APP_NAME: ${{ secrets.APP_NAME || 'Portfolio_Boris' }}
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID || 'nine-tones-bots-2025-468320' }}
+  REGION: ${{ secrets.AR_REGION || 'us-central1' }}
+  REPOSITORY: ${{ secrets.AR_REPO_NAME || 'tasty-ar' }}
 
 jobs:
   deploy:
@@ -32,13 +32,13 @@ jobs:
         echo "REGION: '${{ env.REGION }}'"
         echo "REPOSITORY: '${{ env.REPOSITORY }}'"
         
-        echo "🔍 GitHub Variables (raw):"
-        echo "vars.APP_NAME: '${{ vars.APP_NAME }}'"
-        echo "vars.GCP_PROJECT_ID: '${{ vars.GCP_PROJECT_ID }}'"
-        echo "vars.AR_REGION: '${{ vars.AR_REGION }}'"
-        echo "vars.AR_REPO_NAME: '${{ vars.AR_REPO_NAME }}'"
-        echo "vars.VM_HOST: '${{ vars.VM_HOST }}'"
-        echo "vars.VM_SSH_USER: '${{ vars.VM_SSH_USER }}'"
+        echo "🔍 GitHub Secrets (raw):"
+        echo "secrets.APP_NAME: '${{ secrets.APP_NAME }}'"
+        echo "secrets.GCP_PROJECT_ID: '${{ secrets.GCP_PROJECT_ID }}'"
+        echo "secrets.AR_REGION: '${{ secrets.AR_REGION }}'"
+        echo "secrets.AR_REPO_NAME: '${{ secrets.AR_REPO_NAME }}'"
+        echo "secrets.VM_HOST: '${{ secrets.VM_HOST }}'"
+        echo "secrets.VM_SSH_USER: '${{ secrets.VM_SSH_USER }}'"
         
         # Check if variables are empty
         if [ -z "${{ env.REGION }}" ]; then
@@ -203,8 +203,8 @@ jobs:
     - name: 🔍 Debug SSH Connection
       run: |
         echo "🔍 SSH Connection Debug:"
-        echo "VM_HOST: '${{ vars.VM_HOST }}'"
-        echo "VM_SSH_USER: '${{ vars.VM_SSH_USER }}'"
+        echo "VM_HOST: '${{ secrets.VM_HOST }}'"
+        echo "VM_SSH_USER: '${{ secrets.VM_SSH_USER }}'"
         echo "SSH Key type: $(echo '${{ secrets.VM_SSH_KEY }}' | head -1)"
         
         # Create temporary SSH key file
@@ -223,7 +223,7 @@ jobs:
             -o StrictHostKeyChecking=no \
             -o UserKnownHostsFile=/dev/null \
             -i /tmp/ssh_key \
-            ${{ vars.VM_SSH_USER }}@${{ vars.VM_HOST }} \
+            ${{ secrets.VM_SSH_USER }}@${{ secrets.VM_HOST }} \
             "echo 'SSH connection successful'" || echo "❌ SSH connection failed"
         
         # Cleanup
@@ -232,8 +232,8 @@ jobs:
     - name: 🏗️ Setup VM Directories
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ vars.VM_HOST }}
-        username: ${{ vars.VM_SSH_USER }}
+        host: ${{ secrets.VM_HOST }}
+        username: ${{ secrets.VM_SSH_USER }}
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
         timeout: 30s
@@ -257,8 +257,8 @@ jobs:
     - name: 📤 Upload Files to VM
       uses: appleboy/scp-action@v0.1.7
       with:
-        host: ${{ vars.VM_HOST }}
-        username: ${{ vars.VM_SSH_USER }}
+        host: ${{ secrets.VM_HOST }}
+        username: ${{ secrets.VM_SSH_USER }}
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
         timeout: 30s
@@ -273,8 +273,8 @@ jobs:
     - name: 🔍 Verify File Upload
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ vars.VM_HOST }}
-        username: ${{ vars.VM_SSH_USER }}
+        host: ${{ secrets.VM_HOST }}
+        username: ${{ secrets.VM_SSH_USER }}
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
         timeout: 30s
@@ -297,8 +297,8 @@ jobs:
     - name: 📦 Create .env file on VM from Secret Manager
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ vars.VM_HOST }}
-        username: ${{ vars.VM_SSH_USER }}
+        host: ${{ secrets.VM_HOST }}
+        username: ${{ secrets.VM_SSH_USER }}
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
         timeout: 60s
@@ -338,8 +338,8 @@ jobs:
     - name: 🚀 Deploy Application
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ vars.VM_HOST }}
-        username: ${{ vars.VM_SSH_USER }}
+        host: ${{ secrets.VM_HOST }}
+        username: ${{ secrets.VM_SSH_USER }}
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
         timeout: 120s
@@ -451,8 +451,8 @@ jobs:
     - name: 🔍 Health Check & Tests
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ vars.VM_HOST }}
-        username: ${{ vars.VM_SSH_USER }}
+        host: ${{ secrets.VM_HOST }}
+        username: ${{ secrets.VM_SSH_USER }}
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
         timeout: 60s
@@ -474,7 +474,7 @@ jobs:
           
           # External checks
           echo "📍 External health check:"
-          curl -f -m 10 http://${{ vars.VM_HOST }}/ && echo "✅ External frontend OK" || echo "❌ External frontend FAIL"
+          curl -f -m 10 http://${{ secrets.VM_HOST }}/ && echo "✅ External frontend OK" || echo "❌ External frontend FAIL"
           
           # Use consistent container name (matches Caddyfile expectations)
           CONTAINER_NAME="portfolio-boris-app"
@@ -488,8 +488,8 @@ jobs:
       if: failure()
       run: |
         echo "🔧 Rollback Debug Variables:"
-        echo "vars.VM_HOST: '${{ vars.VM_HOST }}'"
-        echo "vars.VM_SSH_USER: '${{ vars.VM_SSH_USER }}'"
+        echo "secrets.VM_HOST: '${{ secrets.VM_HOST }}'"
+        echo "secrets.VM_SSH_USER: '${{ secrets.VM_SSH_USER }}'"
         echo "APP_NAME: '${{ env.APP_NAME }}'"
         echo "IMAGE_PATH: '${{ env.IMAGE_PATH }}'"
 
@@ -497,8 +497,8 @@ jobs:
       if: failure()
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ vars.VM_HOST }}
-        username: ${{ vars.VM_SSH_USER }}
+        host: ${{ secrets.VM_HOST }}
+        username: ${{ secrets.VM_SSH_USER }}
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
         timeout: 60s

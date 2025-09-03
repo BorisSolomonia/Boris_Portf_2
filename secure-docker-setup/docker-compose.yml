@@ -10,7 +10,7 @@ services:
     expose:
       - "80"  # Nginx serves on port 80 inside container
     ports:
-      - "8081:80"  # Map to port 8081 on host to avoid conflicts
+      - "8090:80"  # Map to port 8090 on host to avoid conflicts
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
       interval: 30s

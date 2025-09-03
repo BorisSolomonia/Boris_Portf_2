@@ -470,7 +470,7 @@ jobs:
           
           # VM internal checks
           echo "📍 VM internal health check:"
-          curl -f -m 10 http://localhost:8081/ && echo "✅ Frontend OK" || echo "❌ Frontend FAIL"
+          curl -f -m 10 http://localhost:8090/ && echo "✅ Frontend OK" || echo "❌ Frontend FAIL"
           
           # External checks
           echo "📍 External health check:"

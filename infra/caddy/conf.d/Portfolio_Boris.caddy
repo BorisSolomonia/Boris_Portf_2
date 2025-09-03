@@ -1,0 +1,79 @@
+# Portfolio Boris Caddy Configuration
+# Replace portfolio.yourdomain.com with your actual domain
+
+portfolio.yourdomain.com {
+    # Reverse proxy to the portfolio application
+    reverse_proxy portfolio-boris-app:80 {
+        # Health check for upstream
+        health_uri /
+        health_interval 30s
+        health_timeout 10s
+        
+        # Headers for better proxying
+        header_up Host {http.request.host}
+        header_up X-Real-IP {http.request.remote}
+        header_up X-Forwarded-For {http.request.remote}
+        header_up X-Forwarded-Proto {http.request.scheme}
+    }
+    
+    # Security headers
+    header {
+        # Security headers
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        
+        # Remove server info
+        -Server
+        
+        # CORS headers if needed
+        Access-Control-Allow-Origin "*"
+        Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization"
+    }
+    
+    # Handle preflight requests
+    @options method OPTIONS
+    respond @options 204
+    
+    # Gzip compression
+    encode gzip zstd
+    
+    # Static file caching
+    @static {
+        path_regexp \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$
+    }
+    header @static Cache-Control "public, max-age=31536000, immutable"
+    
+    # Logging
+    log {
+        output file /var/log/caddy/portfolio_boris_access.log {
+            roll_size 100MB
+            roll_keep 10
+            roll_keep_for 720h
+        }
+        format json
+    }
+    
+    # Error handling
+    handle_errors {
+        @5xx expression {http.error.status_code} >= 500
+        respond @5xx "Internal Server Error" 500
+        
+        @4xx expression {http.error.status_code} >= 400 && {http.error.status_code} < 500
+        respond @4xx "Not Found" 404
+    }
+}
+
+# Redirect www to non-www (optional)
+www.portfolio.yourdomain.com {
+    redir https://portfolio.yourdomain.com{uri} permanent
+}
+
+# HTTP to HTTPS redirect (optional, Caddy handles this automatically)
+# But explicit config for clarity
+http://portfolio.yourdomain.com {
+    redir https://portfolio.yourdomain.com{uri} permanent
+}

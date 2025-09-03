@@ -2,7 +2,7 @@
 
 This guide covers deploying the Boris Portfolio app to your existing GCP VM using the proven deployment pattern.
 
-## 🏗️ Architecture Overview
+## 🏗️ Architecture Overview!
 
 ```
 GitHub Actions → Artifact Registry → GCP VM (35.209.56.146)

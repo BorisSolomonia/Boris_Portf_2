@@ -115,7 +115,7 @@ jobs:
         echo "Project: ${{ env.PROJECT_ID }}"
         
         gcloud secrets versions access latest \
-          --secret="${{ env.APP_NAME }}-env" \
+          --secret="portfolio-cv" \
           --project="${{ env.PROJECT_ID }}" > .env.production
         
         echo "✅ Environment variables fetched"
@@ -315,7 +315,7 @@ jobs:
           
           # Fetch environment variables from Secret Manager and save to .env
           gcloud secrets versions access latest \
-            --secret="$APP_NAME-env" \
+            --secret="portfolio-cv" \
             --project="$PROJECT_ID" > /tmp/raw_env
           
           echo "🔧 Cleaning .env file format..."

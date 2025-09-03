@@ -10,7 +10,7 @@ interface DataPoint {
 const InteractiveDataArt = () => {
   const [dataPoints, setDataPoints] = useState<DataPoint[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
-  const intervalRef = useRef<NodeJS.Timeout>()
+  const intervalRef = useRef<number>()
 
   const generateDataPoint = () => {
     const newPoint: DataPoint = {

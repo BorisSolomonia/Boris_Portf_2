@@ -372,7 +372,6 @@ const SavvYProjects = () => {
       </div>
 
       {/* Full Project Viewer Modal */}
-      {console.log('Modal render check - showBlurredView:', showBlurredView, 'selectedProject:', selectedProject)}
       {showBlurredView && (
         <motion.div
           className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"

@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## Project Overview.
 
 This is Boris's portfolio project directory. The project appears to be in its initial setup phase with no code structure yet established.
 

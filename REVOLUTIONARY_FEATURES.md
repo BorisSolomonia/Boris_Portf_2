@@ -27,7 +27,7 @@ This portfolio introduces **5 groundbreaking UX innovations** that have never be
 ### 5. ⚡ **Physics-Driven Visual Elements**
 - **What it does**: Elements have realistic physics - attraction, repulsion, momentum
 - **Why revolutionary**: Web elements behave like physical objects for intuitive interaction
-- **Botticelli principle applied**: Movement follows natural laws, like Renaissance understanding of motion
+- **Botticelli principle applied**: Movement follows natural laws, like Renaissance understanding of motion.
 
 ## Simple Language, Revolutionary UX
 

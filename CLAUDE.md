@@ -109,7 +109,7 @@ The SavvY Projects component (`src/components/SavvYProjects.tsx`) handles profes
 - File validation and error handling
 - Multiple file upload support
 
-### Cover Photo Extraction
+### Cover Photo Extraction.
 - **First page must be extracted as cover photo** for uploaded presentations
 - Cover photos displayed in main project grid (slightly blurred preview)
 - Generated preview should simulate document layout with:

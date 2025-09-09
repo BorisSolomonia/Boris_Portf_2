@@ -178,10 +178,109 @@ const AboutPage = () => {
             </div>
           </motion.section>
 
+          {/* Future Vision Preview Section */}
+          <motion.section
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2, duration: 1 }}
+            className="mb-16"
+          >
+            <div className="bg-gradient-to-br from-gray-900 to-blue-900 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
+              <div className="absolute inset-0 bg-black/20 rounded-3xl"></div>
+              <div className="relative z-10">
+                <div className="text-center mb-8">
+                  <h2 className="text-4xl font-serif-elegant mb-4">
+                    Future Vision
+                  </h2>
+                  <p className="text-xl text-blue-200 font-sans-elegant">
+                    Where AI meets Renaissance artistry in financial innovation
+                  </p>
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-8 items-center">
+                  <div>
+                    <h3 className="text-2xl font-serif-elegant mb-4">Transformative AI Solutions</h3>
+                    <p className="text-gray-300 font-sans-elegant leading-relaxed mb-6">
+                      I envision intelligent applications that analyze cash flows, optimize inventory, 
+                      and automate decision-making—helping organizations run smarter, faster, and with greater resilience.
+                    </p>
+                    
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div className="bg-white/10 rounded-lg p-4 text-center">
+                        <div className="text-2xl mb-2">🧠</div>
+                        <div className="text-sm">Smart Inventory</div>
+                      </div>
+                      <div className="bg-white/10 rounded-lg p-4 text-center">
+                        <div className="text-2xl mb-2">📊</div>
+                        <div className="text-sm">Intelligent Pricing</div>
+                      </div>
+                      <div className="bg-white/10 rounded-lg p-4 text-center">
+                        <div className="text-2xl mb-2">⚡</div>
+                        <div className="text-sm">Financial Analysis</div>
+                      </div>
+                      <div className="bg-white/10 rounded-lg p-4 text-center">
+                        <div className="text-2xl mb-2">🤝</div>
+                        <div className="text-sm">Collaboration Tools</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="mb-6">
+                      <div className="text-6xl mb-4">🚀</div>
+                      <h4 className="text-xl font-serif-elegant mb-2">Personal Commitment</h4>
+                      <p className="text-gray-300 font-sans-elegant text-sm">
+                        Technology that creates tangible value and empowers organizations
+                      </p>
+                    </div>
+                    
+                    <Link
+                      to="/vision"
+                      className="inline-flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105"
+                      aria-label="Explore full vision and future plans"
+                    >
+                      <span className="font-sans-elegant font-semibold">Explore Full Vision</span>
+                      <motion.span 
+                        className="inline-block"
+                        animate={{ x: [0, 3, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        →
+                      </motion.span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Floating particles effect */}
+              <div className="absolute inset-0 overflow-hidden">
+                {[...Array(15)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-1 h-1 bg-blue-400/40 rounded-full"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 100}%`,
+                    }}
+                    animate={{
+                      y: [-10, -50, -10],
+                      opacity: [0, 1, 0],
+                    }}
+                    transition={{
+                      duration: 2 + Math.random(),
+                      repeat: Infinity,
+                      delay: Math.random(),
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.section>
+
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1.8, duration: 0.8 }}
+            transition={{ delay: 2.3, duration: 0.8 }}
             className="text-center bg-visionary-gradient rounded-2xl p-8"
           >
             <h2 className="text-3xl font-serif-elegant text-renaissance-brown mb-6">

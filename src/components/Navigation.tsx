@@ -11,6 +11,7 @@ const Navigation = () => {
     { path: '/', label: 'Home', icon: '⌂' },
     { path: '/projects', label: 'Work', icon: '⚡' },
     { path: '/about', label: 'About', icon: '👤' },
+    { path: '/vision', label: 'Vision', icon: '🚀' },
     { path: '/contact', label: 'Contact', icon: '📧' }
   ]
 

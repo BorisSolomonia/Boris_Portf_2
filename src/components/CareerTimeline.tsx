@@ -269,7 +269,7 @@ function YearNode({
   selected: boolean;
   onSelect: (i: number) => void;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLButtonElement>(null);
   const inView = useInView(ref, { amount: 0.5 });
   const controls = useAnimation();
 

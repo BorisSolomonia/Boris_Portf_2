@@ -23,22 +23,10 @@ interface Project {
 
 const WorkPage = () => {
   const [selectedProject, setSelectedProject] = useState<number | null>(null)
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const heroRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: heroRef })
   const y = useTransform(scrollYProgress, [0, 1], [0, -30])
   const isInView = useInView(heroRef, { once: true, amount: 0.3 })
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY })
-    }
-    
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-    }
-  }, [])
 
   const projects: Project[] = [
     {
@@ -174,7 +162,9 @@ const WorkPage = () => {
     <div className="min-h-screen bg-renaissance-cream">
       {/* Hero Section */}
       <div ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <MorphingLayout morphType="data" className="absolute inset-0" />
+        <MorphingLayout morphType="data" className="absolute inset-0">
+          <div />
+        </MorphingLayout>
         
         <motion.div
           className="relative z-10 text-center px-6 max-w-4xl mx-auto"

@@ -34,21 +34,33 @@ const PhotoFrame = () => {
           {/* Inner shadow frame */}
           <div className="absolute inset-2 rounded-xl shadow-inner bg-gradient-to-br from-gray-50 to-gray-100">
             
-            {/* Photo placeholder with contemporary styling */}
-            <div className="absolute inset-3 rounded-lg overflow-hidden bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
+            {/* Profile Photo */}
+            <div className="absolute inset-3 rounded-lg overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+              <img 
+                src="/images/profile-photo.jpg"
+                alt="Boris Solomonia - Financial Technology Consultant"
+                className="w-full h-full object-cover object-center"
+                onError={(e) => {
+                  // Fallback to placeholder if image fails to load
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  const fallback = target.parentElement?.querySelector('.fallback-content');
+                  if (fallback) (fallback as HTMLElement).style.display = 'flex';
+                }}
+              />
               
-              {/* Placeholder content - replace with actual photo */}
-              <div className="text-center space-y-4">
-                <div className="w-32 h-32 mx-auto bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-4xl text-white font-bold">B</span>
+              {/* Fallback content if image doesn't load */}
+              <div className="fallback-content hidden w-full h-full bg-gradient-to-br from-blue-100 to-indigo-100 items-center justify-center">
+                <div className="text-center space-y-4">
+                  <div className="w-32 h-32 mx-auto bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-4xl text-white font-bold">B</span>
+                  </div>
+                  <p className="text-gray-600 text-sm font-medium">Boris Solomonia</p>
                 </div>
-                <p className="text-gray-600 text-sm font-medium">Boris Photo</p>
               </div>
 
-              {/* Geometric accent elements */}
-              <div className="absolute top-4 right-4 w-3 h-3 bg-blue-500 rounded-full opacity-60" />
-              <div className="absolute bottom-6 left-6 w-2 h-2 bg-indigo-500 rounded-full opacity-40" />
-              <div className="absolute top-1/2 left-4 w-1 h-1 bg-blue-400 rounded-full opacity-80" />
+              {/* Subtle overlay for better text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent pointer-events-none" />
             </div>
           </div>
 

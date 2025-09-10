@@ -50,9 +50,9 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
               className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start items-center"
             >
               <Link
-                to="/projects"
+                to="/work"
                 className="group px-8 py-4 bg-blue-600 text-white rounded-lg transition-all hover:bg-blue-700 shadow-lg hover:shadow-xl"
-                aria-label="View portfolio projects"
+                aria-label="View portfolio work"
               >
                 <span className="flex items-center space-x-2">
                   <span className="font-semibold">See My Work</span>
@@ -93,10 +93,10 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        <div className="flex flex-col items-center text-renaissance-brown/60">
+        <a href="/work#career-timeline" className="flex flex-col items-center text-renaissance-brown/60 focus:outline-none focus:ring-2 focus:ring-renaissance-gold/60 rounded">
           <span className="text-sm font-sans-elegant mb-2">Discover the narrative</span>
           <div className="w-px h-12 bg-renaissance-gold"></div>
-        </div>
+        </a>
       </motion.div>
     </section>
   )

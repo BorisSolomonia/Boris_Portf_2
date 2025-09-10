@@ -9,7 +9,8 @@ const Navigation = () => {
 
   const navItems = [
     { path: '/', label: 'Home', icon: '⌂' },
-    { path: '/projects', label: 'Work', icon: '⚡' },
+    { path: '/work', label: 'Work', icon: '⚡' },
+    { path: '/projects', label: 'Projects', icon: '📁' },
     { path: '/about', label: 'About', icon: '👤' },
     { path: '/vision', label: 'Vision', icon: '🚀' },
     { path: '/contact', label: 'Contact', icon: '📧' }

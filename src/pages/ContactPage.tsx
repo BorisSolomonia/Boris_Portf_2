@@ -29,20 +29,23 @@ const ContactPage = () => {
     {
       icon: "✉️",
       title: "Direct Correspondence",
-      detail: "boris.renaissance@fintech.art",
-      description: "For detailed project discussions and collaboration inquiries"
+      detail: "borissolomonia@gmail.com",
+      description: "For detailed project discussions and collaboration inquiries",
+      link: "mailto:borissolomonia@gmail.com"
     },
     {
       icon: "💼",
       title: "Professional Network", 
       detail: "LinkedIn Profile",
-      description: "Connect for industry insights and partnership opportunities"
+      description: "Connect for industry insights and partnership opportunities",
+      link: "https://www.linkedin.com/in/boris-solomonia-mba-245b4855/"
     },
     {
       icon: "🎨",
       title: "Creative Portfolio",
       detail: "GitHub Showcase",
-      description: "Explore the technical artistry behind the solutions"
+      description: "Explore the technical artistry behind the solutions",
+      link: "https://github.com/BorisSolomonia"
     }
   ]
 
@@ -85,13 +88,16 @@ const ContactPage = () => {
 
           <div className="grid lg:grid-cols-3 gap-12 mb-16">
             {contactMethods.map((method, index) => (
-              <motion.div
+              <motion.a
                 key={index}
+                href={method.link}
+                target="_blank"
+                rel="noopener noreferrer"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + index * 0.2, duration: 0.8 }}
                 whileHover={{ y: -5 }}
-                className="bg-white/80 rounded-xl p-8 renaissance-shadow text-center lyrical-transition"
+                className="block bg-white/80 rounded-xl p-8 renaissance-shadow text-center lyrical-transition hover:bg-white/90 cursor-pointer"
               >
                 <div className="text-4xl mb-4">{method.icon}</div>
                 <h3 className="text-xl font-serif-elegant text-renaissance-brown mb-3">
@@ -103,7 +109,7 @@ const ContactPage = () => {
                 <p className="text-renaissance-brown/70 font-sans-elegant text-sm leading-relaxed">
                   {method.description}
                 </p>
-              </motion.div>
+              </motion.a>
             ))}
           </div>
 

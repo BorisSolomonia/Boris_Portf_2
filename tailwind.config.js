@@ -13,6 +13,12 @@ export default {
         'renaissance-brown': '#8B4513',
         'renaissance-green': '#228B22',
       },
+      gridTemplateColumns: {
+        '20': 'repeat(20, minmax(0, 1fr))',
+      },
+      gridTemplateRows: {
+        '20': 'repeat(20, minmax(0, 1fr))',
+      },
       fontFamily: {
         'serif-elegant': ['Playfair Display', 'serif'],
         'sans-elegant': ['Source Sans Pro', 'sans-serif'],

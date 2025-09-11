@@ -191,25 +191,6 @@ const WorkPage = () => {
             Where Finance Meets Technology
           </motion.p>
 
-          <motion.div
-            className="flex justify-center space-x-12 text-renaissance-brown/60"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.9, duration: 0.8 }}
-          >
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-serif-elegant mb-2">6+</div>
-              <div className="text-sm font-sans-elegant">Years Experience</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-serif-elegant mb-2">50+</div>
-              <div className="text-sm font-sans-elegant">Projects Delivered</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-serif-elegant mb-2">4</div>
-              <div className="text-sm font-sans-elegant">Core Expertise</div>
-            </div>
-          </motion.div>
         </motion.div>
 
         {/* Scroll Indicator */}

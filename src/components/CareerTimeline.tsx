@@ -9,12 +9,39 @@ type Achievement = {
   metrics?: string[];
   linkLabel?: string;
   linkHref?: string;
+  logo?: string;
 };
 
 type TimelineYear = {
   year: number;
   label?: string;
   items: Achievement[];
+};
+
+// === Logo mapping for organizations ===
+const ORGANIZATION_LOGOS: { [key: string]: string } = {
+  "Caucasus University": "/images/caucasus-university.png", // Add when available
+  "Agency of Agricultural Projects Management": "/images/agriculture-agency.png", // Add when available
+  "Free University, Tbilisi": "/images/Free_logo_ENG.png",
+  "JSC SavvY": "/images/savvy-logo.png", // Add when available
+  "Ilia State University": "/images/ilia-university.png", // Add when available
+  "Girchi (Parliament of Georgia)": "/images/girchi-logo.png", // Add when available
+  "EPAM Systems": "/images/epam-logo.png", // Add when available
+  "9 Tones Distribution": "/images/9tones-logo.png", // Add when available
+  "Personal/Startup Tools": "/images/personal-brand.png", // Add when available
+  "Bitcamp": "/images/bitcamp.png",
+  "Redactor": "/images/redactor-logo.png", // Add when available
+  "Startup Initiative": "/images/startup-logo.png", // Add when available
+  "Professional Development": "/images/professional-dev.png", // Add when available
+  "Global Markets": "/images/global-markets.png", // Add when available
+  "Community Contribution": "/images/community-logo.png", // Add when available
+  "Long-term Vision": "/images/vision-logo.png", // Add when available
+  "Government/International Bodies": "/images/government-logo.png", // Add when available
+};
+
+// Function to get logo for organization
+const getOrgLogo = (org?: string): string | undefined => {
+  return org ? ORGANIZATION_LOGOS[org] : undefined;
 };
 
 // === Data derived from your CV ===
@@ -397,38 +424,58 @@ function Modal({
                   : 'border-amber-200 bg-amber-50/30'
                 : 'border-gray-200'
             }`}>
-              <div className="text-lg font-medium">
-                {it.title} {it.org ? <span className="text-gray-500">— {it.org}</span> : null}
+              <div className="flex items-start gap-4">
+                {/* Organization Logo */}
+                {it.org && getOrgLogo(it.org) && (
+                  <div className="flex-shrink-0">
+                    <img
+                      src={getOrgLogo(it.org)}
+                      alt={`${it.org} logo`}
+                      className="w-12 h-12 object-contain rounded-lg bg-white p-1 shadow-sm border border-gray-100"
+                      onError={(e) => {
+                        // Hide image if it fails to load
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                )}
+                
+                <div className="flex-1">
+                  <div className="text-lg font-medium">
+                    {it.title} {it.org ? <span className="text-gray-500">— {it.org}</span> : null}
+                  </div>
+                  {it.period && <div className="text-sm text-gray-500">{it.period}</div>}
+                  {it.metrics && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {it.metrics.map((m, j) => (
+                        <span key={j} className="rounded-full bg-emerald-50 text-emerald-700 px-2.5 py-0.5 text-xs border border-emerald-200">
+                          {m}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {it.bullets && (
+                    <ul className="mt-2 list-disc pl-5 text-gray-700">
+                      {it.bullets.map((b, k) => (
+                        <li key={k}>{b}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {it.linkHref && it.linkLabel && (
+                    <div className="mt-3">
+                      <a
+                        href={it.linkHref}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-block rounded-lg border px-3 py-1.5 text-sm hover:bg-gray-50"
+                      >
+                        {it.linkLabel}
+                      </a>
+                    </div>
+                  )}
+                </div>
               </div>
-              {it.period && <div className="text-sm text-gray-500">{it.period}</div>}
-              {it.metrics && (
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {it.metrics.map((m, j) => (
-                    <span key={j} className="rounded-full bg-emerald-50 text-emerald-700 px-2.5 py-0.5 text-xs border border-emerald-200">
-                      {m}
-                    </span>
-                  ))}
-                </div>
-              )}
-              {it.bullets && (
-                <ul className="mt-2 list-disc pl-5 text-gray-700">
-                  {it.bullets.map((b, k) => (
-                    <li key={k}>{b}</li>
-                  ))}
-                </ul>
-              )}
-              {it.linkHref && it.linkLabel && (
-                <div className="mt-3">
-                  <a
-                    href={it.linkHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-block rounded-lg border px-3 py-1.5 text-sm hover:bg-gray-50"
-                  >
-                    {it.linkLabel}
-                  </a>
-                </div>
-              )}
             </div>
           ))}
         </div>

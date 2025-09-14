@@ -65,6 +65,24 @@ const Icon = ({ type }: { type: string }) => {
           <path d="M9 6v2M9 16v2M5 12H3m12 0h2m-9.2-4.2l-1.4-1.4m8.4 8.4l1.4 1.4" stroke="#475569" strokeWidth="2" strokeLinecap="round" />
         </svg>
       )
+    case 'docker':
+      return (
+        <svg className={common} viewBox="0 0 24 24" aria-hidden>
+          <path d="M3 14c0 2.5 2 4.5 4.5 4.5H15c3.3 0 6-2.7 6-6 0-.3 0-.6-.1-.9" fill="#2396ED" opacity="0.2" />
+          <rect x="6" y="9" width="3" height="3" fill="#2396ED" />
+          <rect x="9" y="9" width="3" height="3" fill="#2396ED" />
+          <rect x="12" y="9" width="3" height="3" fill="#2396ED" />
+          <rect x="9" y="6" width="3" height="3" fill="#2396ED" />
+          <path d="M18.5 11.5c-.8-.6-1.8-1-2.8-1" stroke="#2396ED" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        </svg>
+      )
+    case 'k8s':
+      return (
+        <svg className={common} viewBox="0 0 24 24" aria-hidden>
+          <path d="M12 3l6 3v6l-6 9-6-9V6l6-3z" fill="#326CE5" opacity="0.9" />
+          <circle cx="12" cy="12" r="2" fill="#fff" />
+        </svg>
+      )
     default:
       return null
   }
@@ -79,6 +97,8 @@ const skills: Skill[] = [
   { key: 'gcp', label: 'GCP' },
   { key: 'finance', label: 'Finance' },
   { key: 'om', label: 'OM' },
+  { key: 'docker', label: 'Docker' },
+  { key: 'k8s', label: 'Kubernetes' },
 ]
 
 export default function FloatingSkills() {
@@ -88,7 +108,8 @@ export default function FloatingSkills() {
       const seed = Math.sin(i * 137.031) * 10000
       const rand = (n: number) => ((Math.sin(seed + n) + 1) / 2)
       // Photo area is ~150px radius; keep outside it
-      const radius = 170 + Math.round(rand(1) * 40) // 170..210 px
+      const base = 170 + Math.round(rand(1) * 40) // 170..210 px
+      const radius = Math.round(base * 1.2) // 20% further: 204..252 px
       const start = Math.round(rand(2) * 360) // deg
       const direction = rand(3) > 0.5 ? 1 : -1
       const duration = 18 + rand(4) * 10 // 18..28s

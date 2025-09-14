@@ -4,8 +4,6 @@ import { useMemo } from 'react'
 type Skill = {
   key: string
   label: string
-  x: string
-  y: string
 }
 
 // Minimal inline SVG icons for each skill
@@ -73,50 +71,61 @@ const Icon = ({ type }: { type: string }) => {
 }
 
 const skills: Skill[] = [
-  { key: 'excel', label: 'MS Excel', x: '-60px', y: '-24px' },
-  { key: 'java', label: 'Java', x: '260px', y: '10px' },
-  { key: 'sql', label: 'SQL', x: '-70px', y: '160px' },
-  { key: 'spring', label: 'SP Boot', x: '230px', y: '170px' },
-  { key: 'oauth', label: 'OAuth', x: '50%', y: '-50px' },
-  { key: 'gcp', label: 'GCP', x: '75%', y: '120px' },
-  { key: 'finance', label: 'Finance', x: '10%', y: '210px' },
-  { key: 'om', label: 'OM', x: '-40px', y: '60%' },
+  { key: 'excel', label: 'MS Excel' },
+  { key: 'java', label: 'Java' },
+  { key: 'sql', label: 'SQL' },
+  { key: 'spring', label: 'SP Boot' },
+  { key: 'oauth', label: 'OAuth' },
+  { key: 'gcp', label: 'GCP' },
+  { key: 'finance', label: 'Finance' },
+  { key: 'om', label: 'OM' },
 ]
 
 export default function FloatingSkills() {
-  // Precompute small random motion vectors for each skill (stable per render)
-  const motionOffsets = useMemo(() =>
+  // Precompute circular orbit params so badges never cross the photo area
+  const orbits = useMemo(() =>
     skills.map((_, i) => {
-      // seeded randomness from index for stability
-      const seed = Math.sin(i * 999) * 10000
+      const seed = Math.sin(i * 137.031) * 10000
       const rand = (n: number) => ((Math.sin(seed + n) + 1) / 2)
-      const amp = 14 + Math.round(rand(1) * 10) // 14..24 px
-      const dx = (rand(2) > 0.5 ? 1 : -1) * amp
-      const dy = (rand(3) > 0.5 ? 1 : -1) * Math.max(10, Math.round(amp * rand(4)))
-      const duration = 3.2 + (i % 3) * 0.5 + rand(5) * 0.6
-      const delay = 0.15 + i * 0.08
-      return { dx, dy, duration, delay }
+      // Photo area is ~150px radius; keep outside it
+      const radius = 170 + Math.round(rand(1) * 40) // 170..210 px
+      const start = Math.round(rand(2) * 360) // deg
+      const direction = rand(3) > 0.5 ? 1 : -1
+      const duration = 18 + rand(4) * 10 // 18..28s
+      const bob = 6 + Math.round(rand(5) * 6) // 6..12 px vertical bob
+      const delay = i * 0.4
+      return { radius, start, direction, duration, bob, delay }
     })
   , [])
 
   return (
     <div className="pointer-events-none absolute inset-0 z-10 select-none">
-      {skills.map((s, i) => {
-        const { dx, dy, duration, delay } = motionOffsets[i]
-        return (
-          <motion.div
-            key={s.key}
-            initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-            animate={{ x: [0, dx, 0, -dx, 0], y: [0, -dy, 0, dy, 0] }}
-            transition={{ duration, delay, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ position: 'absolute', left: s.x, top: s.y }}
-            className="inline-flex items-center rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 shadow-sm px-3 py-1.5 text-[12px] sm:text-[14px] text-gray-700"
-          >
-            <Icon type={s.key} />
-            <span>{s.label}</span>
-          </motion.div>
-        )
-      })}
+      {/* Centered origin for all orbits */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        {skills.map((s, i) => {
+          const { radius, start, direction, duration, bob, delay } = orbits[i]
+          return (
+            <motion.div
+              key={s.key}
+              style={{ width: 0, height: 0 }}
+              initial={{ rotate: start }}
+              animate={{ rotate: start + direction * 360 }}
+              transition={{ duration, repeat: Infinity, ease: 'linear', delay }}
+              className="absolute left-1/2 top-1/2"
+            >
+              <motion.div
+                initial={{ opacity: 1, y: -radius }}
+                animate={{ y: [-radius, -radius - bob, -radius] }}
+                transition={{ duration: duration / 6, repeat: Infinity, ease: 'easeInOut', delay: delay / 2 }}
+                className="-translate-x-1/2 inline-flex items-center rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 shadow-sm px-3 py-1.5 text-[12px] sm:text-[14px] text-gray-700"
+              >
+                <Icon type={s.key} />
+                <span>{s.label}</span>
+              </motion.div>
+            </motion.div>
+          )
+        })}
+      </div>
     </div>
   )
 }

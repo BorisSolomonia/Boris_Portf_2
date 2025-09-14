@@ -83,6 +83,15 @@ const Icon = ({ type }: { type: string }) => {
           <circle cx="12" cy="12" r="2" fill="#fff" />
         </svg>
       )
+    case 'blockchain':
+      return (
+        <svg className={common} viewBox="0 0 24 24" aria-hidden>
+          <rect x="4" y="4" width="6" height="6" rx="1.2" fill="#0EA5E9" />
+          <rect x="14" y="14" width="6" height="6" rx="1.2" fill="#22C55E" />
+          <path d="M10 7h4v4" fill="none" stroke="#64748B" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M8 10v4h4" fill="none" stroke="#64748B" strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+      )
     default:
       return null
   }
@@ -99,6 +108,7 @@ const skills: Skill[] = [
   { key: 'om', label: 'OM' },
   { key: 'docker', label: 'Docker' },
   { key: 'k8s', label: 'Kubernetes' },
+  { key: 'blockchain', label: 'Blockchain' },
 ]
 
 export default function FloatingSkills() {
@@ -109,10 +119,10 @@ export default function FloatingSkills() {
       const rand = (n: number) => ((Math.sin(seed + n) + 1) / 2)
       // Photo area is ~150px radius; keep outside it
       const base = 170 + Math.round(rand(1) * 40) // 170..210 px
-      const radius = Math.round(base * 1.2) // 20% further: 204..252 px
+      const radius = Math.round(base * 1.44) // add another 20% distance
       const start = Math.round(rand(2) * 360) // deg
       const direction = rand(3) > 0.5 ? 1 : -1
-      const duration = 18 + rand(4) * 10 // 18..28s
+      const duration = 28 + rand(4) * 14 // slower: 28..42s
       const bob = 6 + Math.round(rand(5) * 6) // 6..12 px vertical bob
       const delay = i * 0.4
       return { radius, start, direction, duration, bob, delay }

@@ -5,11 +5,13 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden; /* prevent horizontal scroll from absolute effects */
   }
   
   body {
     @apply font-sans-elegant bg-renaissance-cream text-renaissance-brown;
     line-height: 1.618; /* Golden ratio for typography */
+    overflow-x: hidden; /* ensure no horizontal overflow */
   }
 
   h1, h2, h3, h4, h5, h6 {

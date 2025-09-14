@@ -73,6 +73,8 @@ const TIMELINE: TimelineYear[] = [
         bullets: [
           "Designed streamlined financial processes.",
           "Managed complex project budgets and compliance.",
+          "Built logistic system for the organization.",
+          "Managed a team of 7 employees.",
         ],
       },
     ],

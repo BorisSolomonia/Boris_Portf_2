@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import FloatingSkills from './FloatingSkills'
 
 const PhotoFrame = () => {
   const [isHovered, setIsHovered] = useState(false)
@@ -96,6 +97,8 @@ const PhotoFrame = () => {
               />
             </>
           )}
+          {/* Floating skills orbiting around the photo */}
+          <FloatingSkills />
         </div>
 
         {/* Contemporary text label */}

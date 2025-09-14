@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useMemo } from 'react'
 
 type Skill = {
   key: string
@@ -9,7 +10,7 @@ type Skill = {
 
 // Minimal inline SVG icons for each skill
 const Icon = ({ type }: { type: string }) => {
-  const common = 'w-4 h-4 sm:w-5 sm:h-5 mr-1.5 flex-shrink-0'
+  const common = 'w-5 h-5 sm:w-6 sm:h-6 mr-1.5 flex-shrink-0'
   switch (type) {
     case 'excel':
       return (
@@ -82,37 +83,40 @@ const skills: Skill[] = [
   { key: 'om', label: 'OM', x: '-40px', y: '60%' },
 ]
 
-const floatAnim = {
-  initial: { opacity: 0, y: 6, scale: 0.95 },
-  animate: (i: number) => ({
-    opacity: 1,
-    y: [0, -6, 0],
-    transition: {
-      delay: 0.2 + i * 0.07,
-      duration: 3 + (i % 3) * 0.4,
-      repeat: Infinity,
-      ease: 'easeInOut',
-    },
-  }),
-}
-
 export default function FloatingSkills() {
+  // Precompute small random motion vectors for each skill (stable per render)
+  const motionOffsets = useMemo(() =>
+    skills.map((_, i) => {
+      // seeded randomness from index for stability
+      const seed = Math.sin(i * 999) * 10000
+      const rand = (n: number) => ((Math.sin(seed + n) + 1) / 2)
+      const amp = 14 + Math.round(rand(1) * 10) // 14..24 px
+      const dx = (rand(2) > 0.5 ? 1 : -1) * amp
+      const dy = (rand(3) > 0.5 ? 1 : -1) * Math.max(10, Math.round(amp * rand(4)))
+      const duration = 3.2 + (i % 3) * 0.5 + rand(5) * 0.6
+      const delay = 0.15 + i * 0.08
+      return { dx, dy, duration, delay }
+    })
+  , [])
+
   return (
     <div className="pointer-events-none absolute inset-0 z-10 select-none">
-      {skills.map((s, i) => (
-        <motion.div
-          key={s.key}
-          custom={i}
-          variants={floatAnim}
-          initial="initial"
-          animate="animate"
-          style={{ position: 'absolute', left: s.x, top: s.y }}
-          className="inline-flex items-center rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 shadow-sm px-2.5 py-1 text-[10px] sm:text-xs text-gray-700"
-        >
-          <Icon type={s.key} />
-          <span>{s.label}</span>
-        </motion.div>
-      ))}
+      {skills.map((s, i) => {
+        const { dx, dy, duration, delay } = motionOffsets[i]
+        return (
+          <motion.div
+            key={s.key}
+            initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+            animate={{ x: [0, dx, 0, -dx, 0], y: [0, -dy, 0, dy, 0] }}
+            transition={{ duration, delay, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ position: 'absolute', left: s.x, top: s.y }}
+            className="inline-flex items-center rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 shadow-sm px-3 py-1.5 text-[12px] sm:text-[14px] text-gray-700"
+          >
+            <Icon type={s.key} />
+            <span>{s.label}</span>
+          </motion.div>
+        )
+      })}
     </div>
   )
 }

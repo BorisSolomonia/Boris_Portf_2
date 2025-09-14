@@ -20,23 +20,28 @@ type TimelineYear = {
 
 // === Logo mapping for organizations ===
 const ORGANIZATION_LOGOS: { [key: string]: string } = {
-  "Caucasus University": "/images/caucasus-university.png", // Add when available
-  "Agency of Agricultural Projects Management": "/images/agriculture-agency.png", // Add when available
+  // Education
+  "Caucasus University": "/images/CU-SiteLogo.png",
   "Free University, Tbilisi": "/images/Free_logo_ENG.png",
-  "JSC SavvY": "/images/savvy-logo.png", // Add when available
-  "Ilia State University": "/images/ilia-university.png", // Add when available
-  "Girchi (Parliament of Georgia)": "/images/girchi-logo.png", // Add when available
-  "EPAM Systems": "/images/epam-logo.png", // Add when available
-  "9 Tones Distribution": "/images/9tones-logo.png", // Add when available
-  "Personal/Startup Tools": "/images/personal-brand.png", // Add when available
+  "Ilia State University": "/images/ilia.png",
+
+  // Work experience
+  "Agency of Agricultural Projects Management": "/images/RDA-Logo.png",
+  "JSC SavvY": "/images/savvy.png",
+  "Girchi (Parliament of Georgia)": "/images/girchi.jpg",
+  "EPAM Systems": "/images/epam-1.png",
+  "9 Tones Distribution": "/images/9t.png",
   "Bitcamp": "/images/bitcamp.png",
-  "Redactor": "/images/redactor-logo.png", // Add when available
-  "Startup Initiative": "/images/startup-logo.png", // Add when available
-  "Professional Development": "/images/professional-dev.png", // Add when available
-  "Global Markets": "/images/global-markets.png", // Add when available
-  "Community Contribution": "/images/community-logo.png", // Add when available
-  "Long-term Vision": "/images/vision-logo.png", // Add when available
-  "Government/International Bodies": "/images/government-logo.png", // Add when available
+
+  // Future/other entries (placeholders may be added later)
+  // "Personal/Startup Tools": "/images/personal-brand.png",
+  // "Redactor": "/images/redactor-logo.png",
+  // "Startup Initiative": "/images/startup-logo.png",
+  // "Professional Development": "/images/professional-dev.png",
+  // "Global Markets": "/images/global-markets.png",
+  // "Community Contribution": "/images/community-logo.png",
+  // "Long-term Vision": "/images/vision-logo.png",
+  // "Government/International Bodies": "/images/government-logo.png",
 };
 
 // Function to get logo for organization

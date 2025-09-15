@@ -1,170 +1,110 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for AI coding assistants working in this repository.
 
-## Project Overview.
+## Project Overview
 
-This is Boris's portfolio project directory. The project appears to be in its initial setup phase with no code structure yet established.
+- Stack: React 18 + Vite + TypeScript + Tailwind CSS + Framer Motion
+- Routing: `react-router-dom`
+- Public assets: `public/images`
+- Key pages: `src/pages/HomePage.tsx`, `src/pages/WorkPage.tsx`, `src/pages/AboutPage.tsx`, `src/pages/ProjectsPage.tsx`, `src/pages/VisionPage.tsx`, `src/pages/ContactPage.tsx`
+- Key components: `HeroSection`, `PhotoFrame`, `ParticleField`, `MorphingLayout`, `CareerTimeline`
 
-## Development Setup
+## Dev Setup
 
-Since this is a new portfolio project, common setup patterns would include:
-
-**For a React/Next.js portfolio:**
 ```bash
-# Initialize with Next.js
-npx create-next-app@latest . --typescript --tailwind --eslint --app
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run lint         # Run ESLint
-npm run type-check   # TypeScript checking (if added)
-```
-
-**For a Vue portfolio:**
-```bash
-# Initialize with Vue
-npm create vue@latest .
 npm install
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run lint         # Run linting
+npm run dev     # start Vite dev server
+npm run build   # production build to dist/
+npm run preview # preview built site
 ```
 
-**For a vanilla HTML/CSS/JS portfolio:**
-```bash
-# Serve locally
-npx serve .
-# Or with Python
-python -m http.server 8000
-```
+## Recent Functional Changes (from chat)
 
-## Architecture Considerations
+- Career timeline logos wired to actual images in `public/images`.
+- Floating skill badges added around the home-page photo; larger, smooth orbits, never cross the photo.
+- Horizontal scrollbar removed across the site.
 
-When developing this portfolio:
+## Career Timeline Logos
 
-- **Structure**: Organize by feature/section (About, Projects, Contact, etc.)
-- **Responsive Design**: Ensure mobile-first approach
-- **Performance**: Optimize images and assets for web
-- **SEO**: Include proper meta tags and semantic HTML
-- **Accessibility**: Follow WCAG guidelines for inclusive design
+- Mapping file: `src/components/CareerTimeline.tsx` — constant `ORGANIZATION_LOGOS`.
+- Current mappings (paths are under `/images`, resolved from `public/images`):
+  - Caucasus University → `CU-SiteLogo.png`
+  - Free University, Tbilisi → `Free_logo_ENG.png`
+  - Ilia State University → `ilia.png`
+  - Agency of Agricultural Projects Management → `RDA-Logo.png`
+  - JSC SavvY → `savvy.png`
+  - Girchi (Parliament of Georgia) → `girchi.jpg`
+  - EPAM Systems → `epam-1.png`
+  - 9 Tones Distribution → `9t.png`
+  - Bitcamp → `bitcamp.png`
+- Notes:
+  - Keys must match the `org` strings in `TIMELINE` to render a logo.
+  - The component hides a logo automatically if the file is missing (onError handler).
 
-## Common Portfolio Sections
+## Floating Skills Around Photo (Home)
 
-Typical sections to implement:
-- Hero/Introduction
-- About/Bio
-- Skills/Technologies
-- Projects/Work showcase
-- Experience/Resume
-- Contact information
-- Blog (optional)
+- Files:
+  - `src/components/PhotoFrame.tsx` — renders the profile photo and includes `FloatingSkills`.
+  - `src/components/FloatingSkills.tsx` — renders animated skill badges.
+- Behavior:
+  - Badges orbit smoothly around the photo center on circular paths and gently “bob”。
+  - Badges never cross into the photo area (orbit radius keeps them outside).
+  - Always visible; no fade-out. Pointer-events are disabled.
+  - Sizes are ~20% larger for readability.
+- Skills configured:
+  - MS Excel, Java, SQL, SP Boot, OAuth, GCP, Finance, OM, Docker, Kubernetes, Blockchain.
+- Tuning:
+  - Radius/distance: in `FloatingSkills.tsx` via the `orbits` computation (currently base radius increased by ~44% from 170–210px → ~245–302px effective, then a further +20% as requested; adjust there if needed).
+  - Speed: `duration` in `orbits` controls one full rotation (currently ~28–42s for slower motion).
+  - Add/remove skills: edit the `skills` array and optionally add an inline SVG in `Icon`.
+  - To use brand assets instead of inline SVGs, swap the `Icon` output with an `<img src="/images/..." />` per key.
 
-## Asset Management
+## Horizontal Scrollbar Removal
 
-- Store images in `/public/images/` or `/assets/images/`
-- Optimize images for web (WebP format recommended)
-- Use appropriate alt text for accessibility
-- Consider using a CDN for larger assets
+- File: `src/styles/index.css`
+- Applied `overflow-x: hidden` on `html` and `body` to prevent wide absolute/animated layers from forcing horizontal scroll.
 
-## Deployment Considerations
+## Particle Field (Background)
 
-**Target Platform: GCP VM**
+- File: `src/components/ParticleField.tsx`
+- Abstract, interconnected blue dots following the cursor. Independent from floating skill badges.
 
-The portfolio must be built for deployment on Google Cloud Platform Virtual Machine:
+## Deployment Notes (GCP VM + Docker)
 
-- **Static Build Required**: Generate static files that can be served by a web server (nginx/Apache)
-- **Build Commands**: Use `npm run build` or equivalent to create production-ready static files
-- **Output Directory**: Ensure build output goes to standard directories (`dist/`, `build/`, `out/`)
-- **Web Server Configuration**: Files must be servable by standard web servers on GCP VM
-- **Asset Paths**: Use relative paths or configure base paths for proper asset loading
-- **Environment Variables**: Configure for production environment on VM
+If remote deploys over SSH time out while pulling the container image:
 
-**Recommended Build Targets:**
-```bash
-# For Next.js - static export
-npm run build && npm run export
-# Output: out/ directory
+- Increase SSH step timeout to 900–1200s.
+- Set Docker/Compose timeouts before pulls:
+  - `export DOCKER_CLIENT_TIMEOUT=900`
+  - `export COMPOSE_HTTP_TIMEOUT=900`
+- Pre-pull explicitly to show progress and fail fast: `docker pull "$IMAGE_PATH:$COMMIT_SHA"`.
+- Confirm Artifact Registry read access and tag presence:
+  - `gcloud artifacts docker images list $IMAGE_PATH --include-tags | grep $COMMIT_SHA`
 
-# For React/Vue - static build
-npm run build
-# Output: dist/ or build/ directory
+## General Guidance
 
-# For vanilla projects - no build needed, serve directly
-```
+- Structure code by feature with small, focused components.
+- Keep assets in `public/images` and reference via `/images/...`.
+- Use Framer Motion for animations already present; match style and easing.
+- Tailwind is configured; prefer utility classes over custom CSS where practical.
 
-## SavvY Projects Component Requirements
+## Future Scope
 
-**File Upload & Display System:**
+SavvY Projects upload/viewer (described below) is not implemented in the current codebase and should be treated as planned work/specification if needed later.
 
-The SavvY Projects component (`src/components/SavvYProjects.tsx`) handles professional presentation uploads with specific requirements:
+### SavvY Projects Component Requirements (Planned)
 
-### Admin Authentication
-- Simple localStorage-based admin toggle (`isAdmin` state)
-- Only admins can upload files - upload area hidden for regular users
-- Admin mode toggle button at bottom of component
+- Admin-only uploads (localStorage guard), supports PPT/PDF up to 50MB.
+- Cover extraction (first page) for grid preview; simulated professional layout if needed.
+- Uploaded projects appear in the grid with badges; full multi-page viewer in a modal.
+- Robust error logging around open/view logic.
+- Security: restrict upload surface, validate types/sizes.
 
-### File Upload Functionality
-- Supports PPT (.ppt, .pptx) and PDF files up to 50MB
-- Drag & drop or click to upload interface
-- File validation and error handling
-- Multiple file upload support
+## Testing Checklist
 
-### Cover Photo Extraction..
-- **First page must be extracted as cover photo** for uploaded presentations
-- Cover photos displayed in main project grid (slightly blurred preview)
-- Generated preview should simulate document layout with:
-  - Document header with filename and type
-  - Simulated content sections (text blocks, charts, diagrams)
-  - Professional presentation-style layout
-- Cover photos stored as base64 data URLs in `previewUrl` field
+- Cross-browser and responsive layout checks.
+- Lighthouse performance and accessibility.
+- Verify timeline logos load (or hide gracefully if missing).
+- Home hero animations render smoothly; no horizontal scroll.
 
-### Project Display Integration  
-- Uploaded files automatically appear in main projects grid alongside static projects
-- Project names extracted from filenames (remove extensions, replace separators with spaces, capitalize)
-- Upload date used for project date
-- Green "✓ Uploaded" badge distinguishes uploaded projects from static ones
-- Generated descriptions include upload date
-
-### Modal Content Display
-- **CRITICAL REQUIREMENT**: When clicking on any project icon (especially uploaded projects), user must be redirected to a modal/page showing the COMPLETE project with ALL pages
-- **No blank pages allowed** - clicking must always open full project viewer
-- **Uploaded Projects**: Must show all pages (3-10+ pages) with navigation
-- **Page Navigation**: Previous/Next buttons, page counter, thumbnail navigation
-- **Full Page Visibility**: Each page must be clearly visible and navigable
-- **Debug Requirements**: If modal doesn't open, add extensive console logging to identify:
-  - Click handler execution
-  - State changes (selectedProject, showBlurredView)
-  - Modal rendering conditions
-  - Project data availability
-  - JavaScript errors preventing display
-
-### Static vs Uploaded Project Display
-- **Static Projects**: Show simulated content with light blur (`blur-[1.5px]`)
-- **Uploaded Projects**: Show actual generated pages without blur, fully navigable
-- **Content Structure**: 
-  - Project title and company header
-  - Executive summary section  
-  - Key findings with bullet points
-  - Simulated charts and graphs
-  - Professional business presentation layout
-
-### Technical Implementation
-- UploadedFile interface includes: id, name, size, type, uploadDate, previewUrl
-- File upload utility (`src/utils/fileUpload.ts`) handles validation and preview generation
-- Preview generation creates realistic document previews using HTML5 Canvas
-- State management combines static projects with uploaded projects array
-
-### Security & Privacy
-- Blur level protects confidential content while showing general structure
-- Upload functionality restricted to admin users only
-- File size limits and type validation for security
-
-## Testing
-
-For portfolio projects, focus on:
-- Cross-browser compatibility testing
-- Mobile responsiveness testing
-- Performance testing (Lighthouse scores)
-- Accessibility testing
-- File upload functionality testing (admin mode)
-- Cover photo generation and display testing

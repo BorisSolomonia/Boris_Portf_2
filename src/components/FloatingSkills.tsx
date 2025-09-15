@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { useMemo } from 'react'
 
 type Skill = {
   key: string
@@ -112,48 +111,127 @@ const skills: Skill[] = [
 ]
 
 export default function FloatingSkills() {
-  // Precompute circular orbit params so badges never cross the photo area
-  const orbits = useMemo(() =>
-    skills.map((_, i) => {
-      const seed = Math.sin(i * 137.031) * 10000
-      const rand = (n: number) => ((Math.sin(seed + n) + 1) / 2)
-      // Photo area is ~150px radius; keep outside it
-      const base = 170 + Math.round(rand(1) * 40) // 170..210 px
-      const radius = Math.round(base * 1.44) // add another 20% distance
-      const start = Math.round(rand(2) * 360) // deg
-      const direction = rand(3) > 0.5 ? 1 : -1
-      const duration = 28 + rand(4) * 14 // slower: 28..42s
-      const bob = 6 + Math.round(rand(5) * 6) // 6..12 px vertical bob
-      const delay = i * 0.4
-      return { radius, start, direction, duration, bob, delay }
-    })
-  , [])
+  // Centered, static skill map: Finance at the core.
+
+  // Group skills by how they enable Finance in practice
+  const categories: Record<string, string[]> = {
+    'Data & Analysis': ['excel', 'sql'],
+    'Backend & Services': ['java', 'spring', 'oauth'],
+    'Cloud & DevOps': ['gcp', 'docker', 'k8s'],
+    'Operations': ['om'],
+    'Distributed Ledger': ['blockchain'],
+  }
+
+  // Visual placement: angle per category, small offsets within category
+  const categoryAngles: Record<string, number> = {
+    'Data & Analysis': 210, // bottom-left
+    'Backend & Services': 320, // bottom-right
+    'Cloud & DevOps': 40, // top-right
+    'Operations': 140, // top-left
+    'Distributed Ledger': 270, // bottom center
+  }
+
+  const baseRadius = 190 // keep outside photo area (~150px)
+
+  type Node = {
+    key: string
+    label: string
+    category: string
+    angle: number
+    radius: number
+    x: number
+    y: number
+  }
+
+  const center = skills.find(s => s.key === 'finance')!
+  const others = skills.filter(s => s.key !== 'finance')
+
+  // Build positioned nodes
+  const nodes: Node[] = others.map((s, idx) => {
+    const category = Object.keys(categories).find(cat => categories[cat].includes(s.key)) || 'Other'
+    const baseAngle = categoryAngles[category] ?? (idx * (360 / others.length))
+    // Spread items within a category by a small angle offset
+    const siblings = categories[category] || []
+    const posInSiblings = Math.max(0, siblings.indexOf(s.key))
+    const siblingCount = Math.max(1, siblings.length)
+    const spread = 26 // degrees of spread per category
+    const start = baseAngle - (spread / 2)
+    const angle = start + (siblingCount === 1 ? spread / 2 : (posInSiblings * (spread / (siblingCount - 1))))
+    const rad = (angle * Math.PI) / 180
+    const radius = baseRadius + (posInSiblings % 2 === 0 ? 0 : 20) // slight stagger
+    const x = Math.cos(rad) * radius
+    const y = Math.sin(rad) * radius
+    return { key: s.key, label: s.label, category, angle, radius, x, y }
+  })
+
+  // Category colors for connector hints
+  const catColor: Record<string, string> = {
+    'Data & Analysis': '#4F46E5',
+    'Backend & Services': '#E76F00',
+    'Cloud & DevOps': '#0EA5E9',
+    'Operations': '#475569',
+    'Distributed Ledger': '#22C55E',
+    'Other': '#64748B',
+  }
 
   return (
     <div className="pointer-events-none absolute inset-0 z-10 select-none">
-      {/* Centered origin for all orbits */}
+      {/* SVG connectors from Finance to each skill */}
+      <div className="absolute inset-0">
+        <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible" width="1" height="1" viewBox="-400 -400 800 800" aria-hidden>
+          <defs>
+            <linearGradient id="connector" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#94a3b8" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#cbd5e1" stopOpacity="0.4" />
+            </linearGradient>
+          </defs>
+          {nodes.map(n => (
+            <line key={`ln-${n.key}`} x1={0} y1={0} x2={n.x} y2={n.y} stroke={catColor[n.category] || 'url(#connector)'} strokeWidth={1.5} strokeOpacity={0.65} />
+          ))}
+        </svg>
+      </div>
+
+      {/* Nodes */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        {skills.map((s, i) => {
-          const { radius, start, direction, duration, bob, delay } = orbits[i]
-          return (
+        {/* Center: Finance */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.35, ease: 'easeOut' }}
+          className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 top-1/2 inline-flex items-center rounded-full bg-white/95 backdrop-blur-sm border border-emerald-200 shadow px-3.5 py-2 text-[13px] sm:text-[15px] text-emerald-700"
+        >
+          <Icon type="finance" />
+          <span className="font-medium">{center.label}</span>
+        </motion.div>
+
+        {/* Outer skills */}
+        {nodes.map((n, i) => (
+          <div key={n.key} className="absolute" style={{ left: '50%', top: '50%', transform: `translate(-50%, -50%) rotate(${n.angle}deg) translateY(-${n.radius}px)` }}>
             <motion.div
-              key={s.key}
-              style={{ width: 0, height: 0 }}
-              initial={{ rotate: start }}
-              animate={{ rotate: start + direction * 360 }}
-              transition={{ duration, repeat: Infinity, ease: 'linear', delay }}
-              className="absolute left-1/2 top-1/2"
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, delay: 0.05 * (i + 1), ease: 'easeOut' }}
+              className="-translate-x-1/2 inline-flex items-center rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 shadow-sm px-3 py-1.5 text-[12px] sm:text-[14px] text-gray-700"
             >
-              <motion.div
-                initial={{ opacity: 1, y: -radius }}
-                animate={{ y: [-radius, -radius - bob, -radius] }}
-                transition={{ duration: duration / 6, repeat: Infinity, ease: 'easeInOut', delay: delay / 2 }}
-                className="-translate-x-1/2 inline-flex items-center rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 shadow-sm px-3 py-1.5 text-[12px] sm:text-[14px] text-gray-700"
-              >
-                <Icon type={s.key} />
-                <span>{s.label}</span>
-              </motion.div>
+              <Icon type={n.key} />
+              <span>{n.label}</span>
             </motion.div>
+          </div>
+        ))}
+
+        {/* Category tags (subtle) */}
+        {Object.keys(categories).map((cat, idx) => {
+          const a = categoryAngles[cat]
+          const r = baseRadius - 70
+          const rad = (a * Math.PI) / 180
+          const x = Math.cos(rad) * r
+          const y = Math.sin(rad) * r
+          return (
+            <div key={`cat-${cat}`} className="absolute" style={{ left: '50%', top: '50%', transform: `translate(${x}px, ${y}px)` }}>
+              <div className="pointer-events-auto select-text rounded-md bg-white/80 px-2 py-0.5 text-[10px] sm:text-[11px] text-gray-600 border border-gray-200 shadow-sm" style={{ borderColor: catColor[cat] }}>
+                {cat}
+              </div>
+            </div>
           )
         })}
       </div>

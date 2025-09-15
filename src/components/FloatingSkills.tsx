@@ -7,7 +7,7 @@ type Skill = {
 
 // Minimal inline SVG icons for each skill
 const Icon = ({ type }: { type: string }) => {
-  const common = 'w-5 h-5 sm:w-6 sm:h-6 mr-1.5 flex-shrink-0'
+  const common = 'w-6 h-6 sm:w-7 sm:h-7 mr-2 flex-shrink-0'
   switch (type) {
     case 'excel':
       return (
@@ -131,7 +131,8 @@ export default function FloatingSkills() {
     'Distributed Ledger': 270, // bottom center
   }
 
-  const baseRadius = 190 // keep outside photo area (~150px)
+  // Push skills away from the photo and give them breathing room
+  const baseRadius = 260 // photo ~160px radius; keep well outside
 
   type Node = {
     key: string
@@ -174,11 +175,21 @@ export default function FloatingSkills() {
     'Other': '#64748B',
   }
 
+  // Offset the whole network diagram to the right of the photo
+  const offsetX = 260
+
   return (
     <div className="pointer-events-none absolute inset-0 z-10 select-none">
       {/* SVG connectors from Finance to each skill */}
       <div className="absolute inset-0">
-        <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible" width="1" height="1" viewBox="-400 -400 800 800" aria-hidden>
+        <svg
+          className="absolute overflow-visible"
+          width="1"
+          height="1"
+          viewBox="-600 -600 1200 1200"
+          aria-hidden
+          style={{ left: '50%', top: '50%', transform: `translate(-50%, -50%) translateX(${offsetX}px)` }}
+        >
           <defs>
             <linearGradient id="connector" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#94a3b8" stopOpacity="0.9" />
@@ -186,22 +197,34 @@ export default function FloatingSkills() {
             </linearGradient>
           </defs>
           {nodes.map(n => (
-            <line key={`ln-${n.key}`} x1={0} y1={0} x2={n.x} y2={n.y} stroke={catColor[n.category] || 'url(#connector)'} strokeWidth={1.5} strokeOpacity={0.65} />
+            <line
+              key={`ln-${n.key}`}
+              x1={0}
+              y1={0}
+              x2={n.x}
+              y2={n.y}
+              stroke={catColor[n.category] || 'url(#connector)'}
+              strokeWidth={1.5}
+              strokeOpacity={0.55}
+            />
           ))}
         </svg>
       </div>
 
       {/* Nodes */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div
+        className="absolute"
+        style={{ left: '50%', top: '50%', transform: `translate(-50%, -50%) translateX(${offsetX}px)` }}
+      >
         {/* Center: Finance */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
-          className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 top-1/2 inline-flex items-center rounded-full bg-white/95 backdrop-blur-sm border border-emerald-200 shadow px-3.5 py-2 text-[13px] sm:text-[15px] text-emerald-700"
+          className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 top-1/2 inline-flex items-center rounded-full bg-white/95 backdrop-blur-sm border border-emerald-200 shadow-md px-4 py-2.5 text-[14px] sm:text-[16px] text-emerald-700"
         >
           <Icon type="finance" />
-          <span className="font-medium">{center.label}</span>
+          <span className="font-semibold">{center.label}</span>
         </motion.div>
 
         {/* Outer skills */}
@@ -211,10 +234,10 @@ export default function FloatingSkills() {
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3, delay: 0.05 * (i + 1), ease: 'easeOut' }}
-              className="-translate-x-1/2 inline-flex items-center rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 shadow-sm px-3 py-1.5 text-[12px] sm:text-[14px] text-gray-700"
+              className="-translate-x-1/2 inline-flex items-center rounded-full bg-white/92 backdrop-blur-sm border border-gray-200 shadow px-3.5 py-1.5 text-[12px] sm:text-[14px] text-gray-800"
             >
               <Icon type={n.key} />
-              <span>{n.label}</span>
+              <span className="font-medium">{n.label}</span>
             </motion.div>
           </div>
         ))}
@@ -222,13 +245,13 @@ export default function FloatingSkills() {
         {/* Category tags (subtle) */}
         {Object.keys(categories).map((cat) => {
           const a = categoryAngles[cat]
-          const r = baseRadius - 70
+          const r = baseRadius - 90
           const rad = (a * Math.PI) / 180
           const x = Math.cos(rad) * r
           const y = Math.sin(rad) * r
           return (
             <div key={`cat-${cat}`} className="absolute" style={{ left: '50%', top: '50%', transform: `translate(${x}px, ${y}px)` }}>
-              <div className="pointer-events-auto select-text rounded-md bg-white/80 px-2 py-0.5 text-[10px] sm:text-[11px] text-gray-600 border border-gray-200 shadow-sm" style={{ borderColor: catColor[cat] }}>
+              <div className="pointer-events-auto select-text rounded-md bg-white/85 px-2 py-0.5 text-[10px] sm:text-[11px] text-gray-600 border border-gray-200 shadow-sm" style={{ borderColor: catColor[cat], color: catColor[cat] }}>
                 {cat}
               </div>
             </div>

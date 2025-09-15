@@ -220,7 +220,7 @@ export default function FloatingSkills() {
         ))}
 
         {/* Category tags (subtle) */}
-        {Object.keys(categories).map((cat, idx) => {
+        {Object.keys(categories).map((cat) => {
           const a = categoryAngles[cat]
           const r = baseRadius - 70
           const rad = (a * Math.PI) / 180

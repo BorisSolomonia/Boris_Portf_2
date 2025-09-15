@@ -31,6 +31,21 @@ const HomePage = () => {
       
       <div className="min-h-screen pt-20 relative z-10">
         <HeroSection scrollY={0} />
+        {/* Top quick links: Work then Education */}
+        <div className="max-w-7xl mx-auto px-6 mt-10">
+          <div className="grid gap-4 md:grid-cols-2">
+            <a href="/work" className="block rounded-2xl p-6 bg-white/70 border border-renaissance-gold/20 hover:shadow-lg transition">
+              <div className="text-sm font-sans-elegant text-renaissance-brown/60 mb-1">Explore</div>
+              <div className="text-2xl font-serif-elegant text-renaissance-brown">Work</div>
+              <div className="text-renaissance-blue/80 mt-1">Projects, impact, and experience</div>
+            </a>
+            <a href="/education" className="block rounded-2xl p-6 bg-white/70 border border-renaissance-gold/20 hover:shadow-lg transition">
+              <div className="text-sm font-sans-elegant text-renaissance-brown/60 mb-1">Next</div>
+              <div className="text-2xl font-serif-elegant text-renaissance-brown">Education</div>
+              <div className="text-renaissance-blue/80 mt-1">Timeline and certifications</div>
+            </a>
+          </div>
+        </div>
         
         <MorphingLayout morphType="golden" className="py-20 px-6">
           <div className="max-w-7xl mx-auto">

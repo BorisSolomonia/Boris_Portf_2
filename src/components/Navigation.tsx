@@ -9,10 +9,9 @@ const Navigation = () => {
 
   const navItems = [
     { path: '/', label: 'Home', icon: '⌂' },
-    { path: '/work', label: 'Work', icon: '⚡' },
+    { path: '/work', label: 'Achievements', icon: '⚡' },
     { path: '/projects', label: 'Projects', icon: '📁' },
-    { path: '/about', label: 'About', icon: '👤' },
-    { path: '/vision', label: 'Vision', icon: '🚀' },
+    { path: '/education', label: 'Education', icon: '🎓' },
     { path: '/contact', label: 'Contact', icon: '📧' }
   ]
 
@@ -90,28 +89,6 @@ const Navigation = () => {
                 </motion.div>
               )
             })}
-            {/* Inject Education link directly after Work in order */}
-            <motion.div>
-              <Link
-                to="/education"
-                className="relative px-4 py-2 rounded-lg transition-colors"
-                onMouseEnter={() => setNavMode('expanded')}
-                onMouseLeave={() => setNavMode('normal')}
-              >
-                <motion.div className="flex items-center space-x-2" whileHover={{ scale: 1.05 }}>
-                  <span className="text-lg">dY"~</span>
-                  <motion.span
-                    className={`font-medium ${location.pathname === '/education' ? 'text-blue-600' : 'text-gray-700 hover:text-blue-600'}`}
-                    animate={{ opacity: navMode === 'minimal' ? 0 : 1, width: navMode === 'minimal' ? 0 : 'auto' }}
-                  >
-                    Education
-                  </motion.span>
-                </motion.div>
-                {location.pathname === '/education' && (
-                  <motion.div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" layoutId="activeTab" initial={false} transition={{ duration: 0.3 }} />
-                )}
-              </Link>
-            </motion.div>
           </div>
 
           {/* Mobile menu */}

@@ -47,7 +47,7 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.2, duration: 0.8 }}
-              className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start items-center"
+              className="flex justify-center lg:justify-start"
             >
               <Link
                 to="/work"
@@ -56,7 +56,7 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
               >
                 <span className="flex items-center space-x-2">
                   <span className="font-semibold">See My Achievements</span>
-                  <motion.span 
+                  <motion.span
                     className="inline-block"
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 2, repeat: Infinity }}
@@ -64,14 +64,6 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
                     →
                   </motion.span>
                 </span>
-              </Link>
-
-              <Link
-                to="/about"
-                className="group px-8 py-4 border-2 border-blue-600 text-blue-600 rounded-lg transition-colors hover:bg-blue-600 hover:text-white"
-                aria-label="Learn about Boris's approach"
-              >
-                <span className="font-semibold">How I Work</span>
               </Link>
             </motion.div>
           </div>
@@ -81,9 +73,27 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
             initial={{ opacity: 0, x: 100, scale: 0.8 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ delay: 0.5, duration: 1.5, ease: "easeOut" }}
-            className="flex justify-center lg:justify-end"
+            className="flex flex-col items-center lg:items-end"
           >
             <PhotoFrame />
+
+            {/* Download CV Button */}
+            <motion.a
+              href="/files/CV/Boris_Solomonia_Finance_CV_02082025.pdf"
+              download="Boris_Solomonia_Finance_CV.pdf"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 2, duration: 0.6 }}
+              className="mt-6 px-4 py-2 bg-white text-gray-700 rounded-md shadow-md hover:shadow-lg transition-all text-sm border border-gray-200 hover:border-gray-300"
+              aria-label="Download Boris's CV"
+            >
+              <span className="flex items-center space-x-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span className="font-medium">Download CV</span>
+              </span>
+            </motion.a>
           </motion.div>
         </div>
       </div>

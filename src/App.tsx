@@ -4,9 +4,7 @@ import SkipLink from './components/SkipLink'
 import HomePage from './pages/HomePage'
 import WorkPage from './pages/WorkPage'
 import ProjectsPage from './pages/ProjectsPage'
-import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
-import VisionPage from './pages/VisionPage'
 import EducationPage from './pages/EducationPage'
 
 function App() {
@@ -21,8 +19,6 @@ function App() {
             <Route path="/work" element={<WorkPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/education" element={<EducationPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/vision" element={<VisionPage />} />
             <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </main>

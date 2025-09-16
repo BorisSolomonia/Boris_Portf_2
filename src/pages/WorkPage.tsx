@@ -174,16 +174,16 @@ const WorkPage = () => {
           transition={{ duration: 1.2, ease: "easeOut" }}
         >
           <motion.h1
-            className="text-6xl md:text-8xl font-serif-elegant text-renaissance-brown mb-8 leading-tight"
+            className="text-4xl md:text-6xl font-serif-elegant text-renaissance-brown mb-6 leading-tight"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            My Work
+            My Achievements
           </motion.h1>
-          
+
           <motion.p
-            className="text-2xl md:text-3xl text-renaissance-blue font-sans-elegant mb-12 leading-relaxed"
+            className="text-lg md:text-xl text-renaissance-blue font-sans-elegant mb-10 leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.6, duration: 0.8 }}
@@ -193,15 +193,63 @@ const WorkPage = () => {
 
         </motion.div>
 
-        {/* Scroll Indicator */}
+        {/* Timeline Navigation */}
         <motion.div
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute bottom-36 left-[41%] transform -translate-x-1/2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 1, duration: 0.8 }}
         >
           <div className="flex flex-col items-center text-renaissance-brown/60">
-            <span className="text-sm font-sans-elegant mb-2">Explore my journey</span>
-            <div className="w-px h-12 bg-renaissance-gold"></div>
+            <span className="text-sm font-sans-elegant mb-6 text-center">Explore my journey</span>
+
+            {/* Timeline Navigation Line */}
+            <div className="relative flex items-center justify-center">
+              {/* Connecting Line */}
+              <div className="absolute top-1/2 left-0 right-0 h-px bg-renaissance-gold/40 -translate-y-1/2"></div>
+
+              {/* Navigation Items */}
+              <div className="relative flex items-center justify-center space-x-16 bg-renaissance-cream px-8">
+                <button
+                  onClick={() => {
+                    const pastSection = document.querySelector('[data-year="2010"]')
+                    pastSection?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                  }}
+                  className="group flex flex-col items-center"
+                >
+                  <div className="w-3 h-3 rounded-full bg-renaissance-blue border-2 border-renaissance-cream group-hover:bg-renaissance-gold transition-colors duration-300 mb-2"></div>
+                  <span className="text-xs font-sans-elegant text-renaissance-brown/70 group-hover:text-renaissance-gold transition-colors duration-300 text-center">
+                    Past
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    const recentSection = document.querySelector('[data-year="2025"]')
+                    recentSection?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                  }}
+                  className="group flex flex-col items-center"
+                >
+                  <div className="w-3 h-3 rounded-full bg-renaissance-green border-2 border-renaissance-cream group-hover:bg-renaissance-gold transition-colors duration-300 mb-2"></div>
+                  <span className="text-xs font-sans-elegant text-renaissance-brown/70 group-hover:text-renaissance-gold transition-colors duration-300 text-center">
+                    Recent
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    const futureSection = document.querySelector('[data-year="2025"]')
+                    futureSection?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                  }}
+                  className="group flex flex-col items-center"
+                >
+                  <div className="w-3 h-3 rounded-full bg-renaissance-gold border-2 border-renaissance-cream group-hover:bg-renaissance-gold transition-colors duration-300 mb-2"></div>
+                  <span className="text-xs font-sans-elegant text-renaissance-brown/70 group-hover:text-renaissance-gold transition-colors duration-300 text-center">
+                    Future
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>

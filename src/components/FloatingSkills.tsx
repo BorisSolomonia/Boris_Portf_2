@@ -1,14 +1,17 @@
 import { motion } from 'framer-motion'
 import { useMemo } from 'react'
 
-type Skill = {
+type SkillNode = {
   key: string
   label: string
+  side: 'left' | 'right'
+  y: number
+  highlight?: 'origin' | 'core'
 }
 
 // Minimal inline SVG icons for each skill
 const Icon = ({ type }: { type: string }) => {
-  const common = 'w-5 h-5 sm:w-6 sm:h-6 mr-1.5 flex-shrink-0'
+  const common = 'w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0'
   switch (type) {
     case 'excel':
       return (
@@ -97,67 +100,60 @@ const Icon = ({ type }: { type: string }) => {
   }
 }
 
-const skills: Skill[] = [
-  { key: 'excel', label: 'MS Excel' },
-  { key: 'java', label: 'Java' },
-  { key: 'sql', label: 'SQL' },
-  { key: 'spring', label: 'SP Boot' },
-  { key: 'oauth', label: 'OAuth' },
-  { key: 'gcp', label: 'GCP' },
-  { key: 'finance', label: 'Finance' },
-  { key: 'om', label: 'OM' },
-  { key: 'docker', label: 'Docker' },
-  { key: 'k8s', label: 'Kubernetes' },
-  { key: 'blockchain', label: 'Blockchain' },
+const nodes: SkillNode[] = [
+  { key: 'finance', label: 'Finance', side: 'left', y: 15, highlight: 'origin' },
+  { key: 'excel', label: 'MS Excel', side: 'right', y: 15, highlight: 'core' },
+  { key: 'java', label: 'Java', side: 'left', y: 35, highlight: 'core' },
+  { key: 'sql', label: 'SQL', side: 'right', y: 35 },
+  { key: 'spring', label: 'SP Boot', side: 'left', y: 55, highlight: 'core' },
+  { key: 'oauth', label: 'OAuth', side: 'right', y: 55 },
+  { key: 'docker', label: 'Docker', side: 'left', y: 75 },
+  { key: 'gcp', label: 'GCP', side: 'right', y: 75 },
+  { key: 'k8s', label: 'Kubernetes', side: 'left', y: 95, highlight: 'core' },
+  { key: 'blockchain', label: 'Blockchain', side: 'right', y: 95 },
+  { key: 'om', label: 'OM', side: 'right', y: 25, highlight: 'core' },
 ]
 
+const LEFT_ANCHOR = 14
+const RIGHT_ANCHOR = 86
+
 export default function FloatingSkills() {
-  // Precompute circular orbit params so badges never cross the photo area
-  const orbits = useMemo(() =>
-    skills.map((_, i) => {
-      const seed = Math.sin(i * 137.031) * 10000
-      const rand = (n: number) => ((Math.sin(seed + n) + 1) / 2)
-      // Photo area is ~150px radius; keep outside it
-      const base = 170 + Math.round(rand(1) * 40) // 170..210 px
-      const radius = Math.round(base * 1.44) // add another 20% distance
-      const start = Math.round(rand(2) * 360) // deg
-      const direction = rand(3) > 0.5 ? 1 : -1
-      const duration = 28 + rand(4) * 14 // slower: 28..42s
-      const bob = 6 + Math.round(rand(5) * 6) // 6..12 px vertical bob
-      const delay = i * 0.4
-      return { radius, start, direction, duration, bob, delay }
-    })
-  , [])
+  const { leftNodes, rightNodes } = useMemo(() => {
+    const sorted = [...nodes].sort((a, b) => a.y - b.y)
+    return {
+      leftNodes: sorted.filter((node) => node.side === 'left'),
+      rightNodes: sorted.filter((node) => node.side === 'right'),
+    }
+  }, [])
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-10 select-none">
-      {/* Centered origin for all orbits */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        {skills.map((s, i) => {
-          const { radius, start, direction, duration, bob, delay } = orbits[i]
+    <div className="pointer-events-none absolute inset-y-0 left-1/2 z-10 flex w-[40rem] max-w-[90vw] -translate-x-1/2 select-none sm:w-[44rem]">
+      <div className="relative -top-4 h-[22rem] w-full">
+        {[...leftNodes, ...rightNodes].map((node, index) => {
+          const positionStyles = {
+            left: `${node.side === 'left' ? LEFT_ANCHOR : RIGHT_ANCHOR}%`,
+            top: `${node.y}%`,
+          }
+          const baseClasses = 'absolute -translate-y-1/2 whitespace-nowrap px-2 py-1 text-[11px] font-medium sm:text-[13px]'
+          const palette = 'text-gray-700'
+          const sideClasses = node.side === 'left'
+            ? '-translate-x-full pr-3 text-right'
+            : 'pl-3'
+
           return (
-            <motion.div
-              key={s.key}
-              style={{ width: 0, height: 0 }}
-              initial={{ rotate: start }}
-              animate={{ rotate: start + direction * 360 }}
-              transition={{ duration, repeat: Infinity, ease: 'linear', delay }}
-              className="absolute left-1/2 top-1/2"
+            <div
+              key={node.key}
+              className={`${baseClasses} ${palette} ${sideClasses}`}
+              style={positionStyles}
             >
-              <motion.div
-                initial={{ opacity: 1, y: -radius }}
-                animate={{ y: [-radius, -radius - bob, -radius] }}
-                transition={{ duration: duration / 6, repeat: Infinity, ease: 'easeInOut', delay: delay / 2 }}
-                className="-translate-x-1/2 inline-flex items-center rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 shadow-sm px-3 py-1.5 text-[12px] sm:text-[14px] text-gray-700"
-              >
-                <Icon type={s.key} />
-                <span>{s.label}</span>
-              </motion.div>
-            </motion.div>
+              <div className={`flex items-center gap-2 ${node.side === 'left' ? 'flex-row-reverse' : ''}`}>
+                <Icon type={node.key} />
+                <span>{node.label}</span>
+              </div>
+            </div>
           )
         })}
       </div>
     </div>
   )
 }
-

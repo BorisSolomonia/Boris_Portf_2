@@ -55,7 +55,7 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
                 aria-label="View portfolio work"
               >
                 <span className="flex items-center space-x-2">
-                  <span className="font-semibold">See My Work</span>
+                  <span className="font-semibold">See My Achievements</span>
                   <motion.span 
                     className="inline-block"
                     animate={{ x: [0, 5, 0] }}

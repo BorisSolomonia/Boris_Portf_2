@@ -102,14 +102,14 @@ const PhotoFrame = () => {
         </div>
 
         {/* Contemporary text label */}
-        <motion.div
+        {/* <motion.div
           className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-gray-100"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
           <span className="text-gray-700 font-medium text-sm">Visionary & Innovator</span>
-        </motion.div>
+        </motion.div> */}
       </motion.div>
 
       {/* Background accent shape */}

@@ -197,14 +197,15 @@ const TIMELINE: TimelineYear[] = [
     label: "PLANNED",
     items: [
       {
-        title: "Deliver Pillar Projects",
-        org: "ERP Modernization & Brooks Programs",
+        title: "AI-Powered ERP System",
+        org: "Develop an ERP / Brooks",
         period: "2025",
         bullets: [
-          "Close out the ERP modernization so automation quietly pays for itself with faster closes and cleaner reads.",
-          "Steer the Brooks implementation until client growth feels inevitable rather than aspirational.",
-          "Turn the wins into leadership narratives that make the next promotion conversation feel overdue.",
+          "Join a large AI-focused organization to leverage hybrid finance + tech expertise, delivering value-driven AI solutions",
+          "Develop an ERP app integrating AI at key stages, connecting with government platforms",
+          "Advance Brooks — a geo-location social app where users leave notes, set future reminders, and share experiences tied to specific places",
         ],
+        
       },
     ],
   },
@@ -219,7 +220,7 @@ const TIMELINE: TimelineYear[] = [
         bullets: [
           "Reuse modular AI frameworks across finance, logistics, healthcare, and education so every pilot looks like a template.",
           "Bundle adoption roadmaps and governance memos that let executives greenlight the next rollout without a second meeting.",
-          "Operate as the strategist-builder whose presence keeps ROI discussions brief and affirmative.",
+          "Focus on scalable, transferable AI frameworks that solve problems across sectors",
         ],
       },
     ],

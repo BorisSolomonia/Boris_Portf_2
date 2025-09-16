@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { useMemo } from 'react'
 
 type SkillNode = {
@@ -129,7 +128,7 @@ export default function FloatingSkills() {
   return (
     <div className="pointer-events-none absolute inset-y-0 left-1/2 z-10 flex w-[40rem] max-w-[90vw] -translate-x-1/2 select-none sm:w-[44rem]">
       <div className="relative -top-4 h-[22rem] w-full">
-        {[...leftNodes, ...rightNodes].map((node, index) => {
+        {[...leftNodes, ...rightNodes].map((node) => {
           const positionStyles = {
             left: `${node.side === 'left' ? LEFT_ANCHOR : RIGHT_ANCHOR}%`,
             top: `${node.y}%`,

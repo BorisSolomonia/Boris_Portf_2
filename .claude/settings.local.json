@@ -9,7 +9,12 @@
       "Bash(npm install)",
       "Bash(npm run dev:*)",
       "Bash(npm run build:*)",
-      "Bash(copy:*)"
+      "Bash(copy:*)",
+      "Bash(npx tsc:*)",
+      "WebFetch(domain:ornate-dragon-82e353.netlify.app)",
+      "WebFetch(domain:35.209.56.146)",
+      "WebFetch(domain:github.com)",
+      "WebSearch"
     ],
     "deny": []
   }

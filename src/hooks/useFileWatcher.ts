@@ -51,10 +51,32 @@ export const useFileWatcher = (watchPath: string) => {
       setLoading(true)
       setError(null)
 
-      // No predefined files - will only show actually uploaded files
-      // In a real implementation, this would scan the directory dynamically
-      // For now, return empty array unless files are specifically detected
-      const knownFiles: string[] = []
+      // Load finance projects from the generated manifest
+      let knownFiles: string[] = []
+
+      try {
+        const manifestResponse = await fetch('/src/generated/financeManifest.json')
+        if (manifestResponse.ok) {
+          const manifest = await manifestResponse.json()
+          knownFiles = manifest.map((item: any) => item.filename)
+        }
+      } catch (manifestError) {
+        // Fallback to hardcoded list if manifest is not available
+        knownFiles = [
+          'Almond - Financial Analysis.pdf',
+          'Ambulatory - Financial Analysis.pdf',
+          'Doe - Financial Analysis.pdf',
+          'Granits - Financial Analysis.pdf',
+          'IHUB - Financial Modeling.pdf',
+          'Kvareli Eden - Financial Analysis.pdf',
+          'Megawood - Financial Analysis.pdf',
+          'OTT TeleStrsm - Financial Analysis.pdf',
+          'Real Estate - Business Plan.pdf',
+          'Tile - Financial Analysis.pdf',
+          'Water Supply - Financial Analysis.pdf',
+          'Wine Production - Financial Analysis.pdf'
+        ]
+      }
 
       const detectedFiles: DetectedFile[] = []
 

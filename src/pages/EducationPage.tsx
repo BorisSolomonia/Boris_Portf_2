@@ -17,13 +17,23 @@ type Certification = {
 }
 
 const educationTimeline: EducationItem[] = [
-  // TODO: Replace with exact CV entries
-  { period: '2016 – 2020', title: 'B.Sc. in Finance / Economics', institution: 'Your University', details: 'Core: Corporate Finance, Econometrics, Accounting' },
-  { period: '2020 – 2021', title: 'Advanced Java / Spring Training', institution: 'EPAM / Bootcamp', details: 'Enterprise services, microservices and cloud-native practices' },
+  {
+    period: '2018',
+    title: 'MBA – Business Administration & Operations Management',
+    institution: 'Free University, Tbilisi, Georgia',
+    details: 'Recognized for Best Academic Achievement'
+  },
+  {
+    period: '2010',
+    title: 'BBA – Financial Accounting and Audit',
+    institution: 'Caucasus University, Tbilisi, Georgia'
+  },
 ]
 
 const certifications: Certification[] = [
-  // Known asset available in repo; replace labels with CV specifics
+  { title: 'BTA Certified Blockchain Business Foundations', issuer: 'Blockchain Training Alliance', image: '/files/CV/certificates/blockchaincert.jpeg' },
+  { title: 'ACCA Certification – Levels 1, 2, and 3', issuer: 'Association of Chartered Certified Accountants', image: '/files/CV/certificates/acca.png' },
+  { title: 'Best Academic Achievement – MBA', issuer: 'Free University, Tbilisi', image: '/files/CV/certificates/BestOM.jpeg' },
   { title: 'Bitcamp Certificate', issuer: 'EPAM / Bitcamp', image: '/images/bitcamp.png' },
 ]
 

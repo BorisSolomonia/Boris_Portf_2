@@ -4,7 +4,7 @@
 
 This portfolio introduces **5 groundbreaking UX innovations** that have never been combined in a web portfolio before:
 
-### 1. 🎯 **Particle Physics-Based Navigation**
+### 1. 🎯 **Particle Physics-Based Navigation**!
 - **What it does**: Navigation responds to mouse movement with realistic particle physics
 - **Why revolutionary**: Particles form connections, creating a living network that mirrors financial data flow
 - **Botticelli principle applied**: Lyrical lines become interactive - users create art by moving their mouse

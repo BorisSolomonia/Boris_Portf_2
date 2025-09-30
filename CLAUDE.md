@@ -2,7 +2,7 @@
 
 Guidance for AI coding assistants working in this repository.
 
-## Project Overview
+## Project Overview.
 
 - Stack: React 18 + Vite + TypeScript + Tailwind CSS + Framer Motion
 - Routing: `react-router-dom`

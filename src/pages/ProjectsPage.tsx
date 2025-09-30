@@ -87,6 +87,25 @@ const ProjectsPage = () => {
       type: "tech",
       coverImage: "/projects/covers/brooks-frontend.jpg",
       githubUrl: "https://github.com/BorisSolomonia/brooks-new-front"
+    },
+    {
+      id: 5,
+      title: "Greenscape.ge",
+      subtitle: "Landscaping Services Website",
+      description: "Public website for a landscaping company showcasing services, projects, and contact information.",
+      challenge: "Create a clean, trustworthy online presence that clearly presents services and drives inquiries.",
+      process: "Designed and implemented a responsive, fast-loading site with clear navigation and contact CTAs.",
+      solution: "Simple, mobile-first layout with service highlights, visuals, and easy ways to get in touch.",
+      impact: [
+        "Improved online credibility",
+        "Responsive across devices",
+        "SEO-friendly structure"
+      ],
+      emoji: "🌿",
+      technologies: ["HTML", "CSS", "JavaScript", "Responsive Design"],
+      lessons: "Clarity and speed matter most for small-business websites.",
+      type: "tech",
+      demoUrl: "https://greenscape.ge"
     }
   ]
 

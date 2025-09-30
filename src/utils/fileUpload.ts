@@ -17,7 +17,15 @@ export const allowedFileTypes = [
   'application/pdf', // PDF versions of presentations
 ]
 
-export const maxFileSize = (import.meta.env.VITE_MAX_FILE_SIZE_MB ? parseInt(import.meta.env.VITE_MAX_FILE_SIZE_MB) : 50) * 1024 * 1024 // Default 50MB
+const DEFAULT_MAX_FILE_SIZE_MB = 50
+const envMaxFileSize = import.meta.env.VITE_MAX_FILE_SIZE_MB
+const parsedMaxFileSize = Number(envMaxFileSize)
+const normalizedMaxFileSizeMB = Number.isFinite(parsedMaxFileSize) && parsedMaxFileSize > 0
+  ? parsedMaxFileSize
+  : DEFAULT_MAX_FILE_SIZE_MB
+
+export const maxFileSizeMB = normalizedMaxFileSizeMB
+export const maxFileSize = maxFileSizeMB * 1024 * 1024
 
 export const validateFile = (file: File): { isValid: boolean; error?: string } => {
   if (!allowedFileTypes.includes(file.type)) {
@@ -30,7 +38,7 @@ export const validateFile = (file: File): { isValid: boolean; error?: string } =
   if (file.size > maxFileSize) {
     return {
       isValid: false,
-      error: 'File size must be less than 50MB'
+      error: `File size must be less than ${maxFileSizeMB}MB`
     }
   }
 

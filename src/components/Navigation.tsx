@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 const Navigation = () => {
   const location = useLocation()
   const [isScrolled, setIsScrolled] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0)
   const [navMode, setNavMode] = useState<'normal' | 'minimal' | 'expanded'>('normal')
 
   const navItems = [
@@ -16,12 +17,26 @@ const Navigation = () => {
   ]
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    const updateScrollState = () => {
+      const currentScroll = window.scrollY
+      setIsScrolled(currentScroll > 50)
+
+      const doc = document.documentElement
+      const maxScroll = doc.scrollHeight - window.innerHeight
+      const rawProgress = maxScroll > 0 ? (currentScroll / maxScroll) * 100 : 0
+      const nextProgress = Math.min(Math.max(rawProgress, 0), 100)
+
+      setScrollProgress((prev) => (Math.abs(prev - nextProgress) > 0.5 ? nextProgress : prev))
+    }
+
+    updateScrollState()
+    window.addEventListener('scroll', updateScrollState, { passive: true })
+
+    return () => window.removeEventListener('scroll', updateScrollState)
   }, [])
 
   return (
@@ -108,9 +123,7 @@ const Navigation = () => {
       {/* Floating progress indicator */}
       <motion.div
         className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500"
-        style={{
-          width: `${(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100}%`
-        }}
+        style={{ width: `${scrollProgress}%` }}
         animate={{ opacity: isScrolled ? 1 : 0 }}
       />
     </motion.nav>

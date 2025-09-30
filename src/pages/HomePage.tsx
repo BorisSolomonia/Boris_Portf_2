@@ -7,6 +7,7 @@ import InteractiveDataArt from '../components/InteractiveDataArt'
 const HomePage = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [isHovered, setIsHovered] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -15,6 +16,35 @@ const HomePage = () => {
 
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+
+  useEffect(() => {
+    let ticking = false
+
+    const updateScroll = () => {
+      const currentScroll = window.scrollY || window.pageYOffset || 0
+      setScrollY((prev) => {
+        if (Math.abs(prev - currentScroll) < 1) {
+          return prev
+        }
+        return currentScroll
+      })
+      ticking = false
+    }
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScroll)
+        ticking = true
+      }
+    }
+
+    updateScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [])
 
   return (
@@ -30,7 +60,7 @@ const HomePage = () => {
       />
       
       <div className="min-h-screen pt-20 relative z-10">
-        <HeroSection scrollY={0} />
+        <HeroSection scrollY={scrollY} />
         {/* Top quick links: Work then Education */}
         <div className="max-w-7xl mx-auto px-6 mt-10">
           <div className="grid gap-4 md:grid-cols-2">

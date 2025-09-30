@@ -1,27 +1,47 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useMemo, type ReactNode } from 'react'
 
 interface MorphingLayoutProps {
-  children: React.ReactNode
+  children: ReactNode
   className?: string
   morphType?: 'golden' | 'organic' | 'data'
 }
 
 const MorphingLayout = ({ children, className = '', morphType = 'golden' }: MorphingLayoutProps) => {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true })
+  const isInView = useInView(ref, { amount: 0.3 })
   const [morphState, setMorphState] = useState(0)
 
   useEffect(() => {
-    if (isInView) {
-      const morphCycle = () => {
-        setMorphState(prev => (prev + 1) % 4)
-      }
-
-      const interval = setInterval(morphCycle, 4000)
-      return () => clearInterval(interval)
+    if (!isInView) {
+      return undefined
     }
+
+    const interval = window.setInterval(() => {
+      setMorphState(prev => (prev + 1) % 4)
+    }, 4000)
+
+    return () => window.clearInterval(interval)
   }, [isInView])
+
+  useEffect(() => {
+    if (!isInView && morphState !== 0) {
+      setMorphState(0)
+    }
+  }, [isInView, morphState])
+
+  const floatingDotAnimations = useMemo(() => {
+    const keyframeCount = 3
+    const createKeyframes = (count: number, max: number) =>
+      Array.from({ length: count }, () => Math.random() * max)
+
+    return Array.from({ length: 8 }, (_, index) => ({
+      x: createKeyframes(keyframeCount, 300),
+      y: createKeyframes(keyframeCount, 200),
+      duration: 8 + index * 0.5 + Math.random(),
+      delay: Math.random() * 1.5
+    }))
+  }, [])
 
   const getMorphPath = () => {
     switch (morphType) {
@@ -92,26 +112,19 @@ const MorphingLayout = ({ children, className = '', morphType = 'golden' }: Morp
 
       {/* Floating data points */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(8)].map((_, i) => (
+        {floatingDotAnimations.map((animation, index) => (
           <motion.div
-            key={i}
+            key={index}
             className="absolute w-2 h-2 bg-blue-400 rounded-full opacity-30"
             animate={{
-              x: [
-                Math.random() * 300,
-                Math.random() * 300,
-                Math.random() * 300,
-              ],
-              y: [
-                Math.random() * 200,
-                Math.random() * 200, 
-                Math.random() * 200,
-              ],
+              x: animation.x,
+              y: animation.y
             }}
             transition={{
-              duration: 8 + i,
+              duration: animation.duration,
               repeat: Infinity,
-              ease: "linear"
+              repeatDelay: animation.delay,
+              ease: 'linear'
             }}
           />
         ))}

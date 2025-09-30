@@ -245,13 +245,13 @@ const TIMELINE: TimelineYear[] = [
 
 function TimelineItem({ year, isLast }: { year: TimelineYear; isLast: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.3 });
+  const inView = useInView(ref, { amount: 0.3, once: true });
 
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 50 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      animate={inView ? { opacity: 1, y: 0 } : undefined}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="relative flex gap-6"
       data-year={year.year}

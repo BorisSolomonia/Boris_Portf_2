@@ -14,7 +14,7 @@ GitHub Actions → Artifact Registry → GCP VM (35.209.56.146)
 
 ## 📋 Prerequisites (Already Setup)
 
-### ✅ GCP Resources
+### ✅ GCP Resources.
 - **Project**: `nine-tones-bots-2025-468320` 
 - **VM Instance**: `35.209.56.146` (borissolomonia@)
 - **Artifact Registry**: `us-central1-docker.pkg.dev/nine-tones-bots-2025-468320/tasty-ar`

@@ -6,6 +6,7 @@ import WorkPage from './pages/WorkPage'
 import ProjectsPage from './pages/ProjectsPage'
 import ContactPage from './pages/ContactPage'
 import EducationPage from './pages/EducationPage'
+import InstructionsPage from './pages/InstructionsPage' // Import the new page
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/education" element={<EducationPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/instructions" element={<InstructionsPage />} />
           </Routes>
         </main>
       </div>

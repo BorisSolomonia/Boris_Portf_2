@@ -65,8 +65,11 @@ const HomePage = () => {
 
         <div className="max-w-7xl mx-auto px-6 mt-10">
           <div className="bg-white/70 border border-renaissance-gold/20 rounded-2xl p-6">
-            <h3 className="text-2xl font-serif-elegant text-renaissance-brown text-center mb-4">RS.ge MCP Download</h3>
+            <h2 className="text-3xl font-serif-elegant text-black text-center mb-4">RS.ge MCP Download</h2>
             <EmailForm />
+            <div className="text-center mt-4">
+              <a href="/instructions" className="text-renaissance-blue hover:underline">Instructions for installation</a>
+            </div>
           </div>
         </div>
 

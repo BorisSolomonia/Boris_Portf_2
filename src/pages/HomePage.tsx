@@ -3,6 +3,7 @@ import HeroSection from '../components/HeroSection'
 import ParticleField from '../components/ParticleField'
 import MorphingLayout from '../components/MorphingLayout'
 import InteractiveDataArt from '../components/InteractiveDataArt'
+import EmailForm from '../components/EmailForm' // Import the new component
 
 const HomePage = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
@@ -61,6 +62,14 @@ const HomePage = () => {
       
       <div className="min-h-screen pt-20 relative z-10">
         <HeroSection scrollY={scrollY} />
+
+        <div className="max-w-7xl mx-auto px-6 mt-10">
+          <div className="bg-white/70 border border-renaissance-gold/20 rounded-2xl p-6">
+            <h3 className="text-2xl font-serif-elegant text-renaissance-brown text-center mb-4">RS.ge MCP Download</h3>
+            <EmailForm />
+          </div>
+        </div>
+
         {/* Top quick links: Work then Education */}
         <div className="max-w-7xl mx-auto px-6 mt-10">
           <div className="grid gap-4 md:grid-cols-2">

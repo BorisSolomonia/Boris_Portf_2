@@ -13,7 +13,7 @@ const EmailForm = () => {
     setError('');
 
     try {
-      const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
+      await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
         method: 'POST',
         mode: 'no-cors', // Note: no-cors mode means you won't get a response back
         headers: {

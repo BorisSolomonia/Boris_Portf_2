@@ -13,19 +13,22 @@ const EmailForm = () => {
     setError('');
 
     try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzONea-lYYKr3LHfzzW8QLL2MmHqwmpdfDt0iblFB06VfHMQelrmdL0GekNh83xw45E/exec', {
+      // Use URL-encoded form data so the request stays "simple" and skips the CORS preflight.
+      const body = new URLSearchParams({ email });
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwe6J-K4GF4qfziZrDajoGaOKClaMdJDZUVtKqHOwa88XbnGWEo0YUj7lQEeaWbtXB4/exec', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
+        body,
       });
 
-      const result = await response.json();
-      console.log(result);
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
 
-      // Since we're using no-cors, we can't check the response status.
-      // We'll assume it was successful and trigger the download.
+      const result = await response.json();
+      if (result.result !== 'success') {
+        throw new Error(result.error || 'Unexpected response');
+      }
+
       setIsSubmitted(true);
       const link = document.createElement('a');
       link.href = '/installers/mcp_installer.exe';
@@ -35,6 +38,7 @@ const EmailForm = () => {
       document.body.removeChild(link);
 
     } catch (err) {
+      console.error(err);
       setError('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);

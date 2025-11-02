@@ -13,7 +13,7 @@ const EmailForm = () => {
     setError('');
 
     try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbxlYzD6MLzH-4BkVk49SNlkSkiR4QgXwlaJ15ZykR7U_mJ7vLK_YKUeUKP5VHc8nZxn/exec', {
+      await fetch('https://script.google.com/macros/s/AKfycbxlYzD6MLzH-4BkVk49SNlkSkiR4QgXwlaJ15ZykR7U_mJ7vLK_YKUeUKP5VHc8nZxn/exec', {
         method: 'POST',
         mode: 'no-cors', // Note: no-cors mode means you won't get a response back
         headers: {

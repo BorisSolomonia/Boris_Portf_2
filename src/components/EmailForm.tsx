@@ -13,14 +13,16 @@ const EmailForm = () => {
     setError('');
 
     try {
-      await fetch('https://script.google.com/macros/s/AKfycbxlYzD6MLzH-4BkVk49SNlkSkiR4QgXwlaJ15ZykR7U_mJ7vLK_YKUeUKP5VHc8nZxn/exec', {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbxlYzD6MLzH-4BkVk49SNlkSkiR4QgXwlaJ15ZykR7U_mJ7vLK_YKUeUKP5VHc8nZxn/exec', {
         method: 'POST',
-        mode: 'no-cors', // Note: no-cors mode means you won't get a response back
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email }),
       });
+
+      const result = await response.json();
+      console.log(result);
 
       // Since we're using no-cors, we can't check the response status.
       // We'll assume it was successful and trigger the download.

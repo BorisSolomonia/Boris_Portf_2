@@ -13,7 +13,7 @@ const EmailForm = () => {
     setError('');
 
     try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzY-orcOpKQyP31rmGWVdscNd_sajdEavf6UPmwoh7FE-P1nTW5-St8clt1JuH-3aM4/exec', {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbzONea-lYYKr3LHfzzW8QLL2MmHqwmpdfDt0iblFB06VfHMQelrmdL0GekNh83xw45E/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

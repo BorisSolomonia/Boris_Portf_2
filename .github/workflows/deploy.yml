@@ -135,18 +135,22 @@ jobs:
         echo "📦 Extracting build arguments from .env.production..."
         echo "🔍 Debug: First few lines of .env.production:"
         head -5 .env.production
-        
+
         VITE_APP_TITLE=$(grep "^VITE_APP_TITLE=" .env.production | cut -d'=' -f2- | tr -d '"' | tr -d "'")
         VITE_APP_DESCRIPTION=$(grep "^VITE_APP_DESCRIPTION=" .env.production | cut -d'=' -f2- | tr -d '"' | tr -d "'")
         VITE_BASE_URL=$(grep "^VITE_BASE_URL=" .env.production | cut -d'=' -f2- | tr -d '"' | tr -d "'")
         VITE_MAX_FILE_SIZE_MB=$(grep "^VITE_MAX_FILE_SIZE_MB=" .env.production | cut -d'=' -f2- | tr -d '"' | tr -d "'")
         VITE_UPLOAD_ENABLED=$(grep "^VITE_UPLOAD_ENABLED=" .env.production | cut -d'=' -f2- | tr -d '"' | tr -d "'")
-        
+        VITE_SUBSCRIBE_ENDPOINT=$(grep "^VITE_SUBSCRIBE_ENDPOINT=" .env.production | cut -d'=' -f2- | tr -d '"' | tr -d "'")
+        VITE_INSTALLER_PATH=$(grep "^VITE_INSTALLER_PATH=" .env.production | cut -d'=' -f2- | tr -d '"' | tr -d "'")
+
         echo "📊 Build args extracted:"
         echo "- VITE_APP_TITLE: '$VITE_APP_TITLE'"
         echo "- VITE_BASE_URL: '$VITE_BASE_URL'"
         echo "- VITE_MAX_FILE_SIZE_MB: '$VITE_MAX_FILE_SIZE_MB'"
         echo "- VITE_UPLOAD_ENABLED: '$VITE_UPLOAD_ENABLED'"
+        echo "- VITE_SUBSCRIBE_ENDPOINT: '${VITE_SUBSCRIBE_ENDPOINT:0:50}...'"
+        echo "- VITE_INSTALLER_PATH: '$VITE_INSTALLER_PATH'"
         
         # Fallback values if extraction fails
         if [ -z "$VITE_APP_TITLE" ]; then
@@ -165,6 +169,14 @@ jobs:
           echo "⚠️ VITE_UPLOAD_ENABLED is empty, using fallback"
           VITE_UPLOAD_ENABLED="true"
         fi
+        if [ -z "$VITE_SUBSCRIBE_ENDPOINT" ]; then
+          echo "⚠️ VITE_SUBSCRIBE_ENDPOINT is empty, using fallback"
+          VITE_SUBSCRIBE_ENDPOINT="https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"
+        fi
+        if [ -z "$VITE_INSTALLER_PATH" ]; then
+          echo "⚠️ VITE_INSTALLER_PATH is empty, using fallback"
+          VITE_INSTALLER_PATH="/installers/RS-Waybill-MCP-Setup.exe"
+        fi
         
         echo "🔧 Starting Docker build..."
         echo "📋 Build arguments:"
@@ -179,6 +191,8 @@ jobs:
           --build-arg VITE_BASE_URL="$VITE_BASE_URL" \
           --build-arg VITE_MAX_FILE_SIZE_MB="$VITE_MAX_FILE_SIZE_MB" \
           --build-arg VITE_UPLOAD_ENABLED="$VITE_UPLOAD_ENABLED" \
+          --build-arg VITE_SUBSCRIBE_ENDPOINT="$VITE_SUBSCRIBE_ENDPOINT" \
+          --build-arg VITE_INSTALLER_PATH="$VITE_INSTALLER_PATH" \
           --build-arg NODE_ENV=production \
           -t $IMAGE_PATH:${{ github.sha }} \
           -t $IMAGE_PATH:latest \

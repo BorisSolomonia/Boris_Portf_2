@@ -1,0 +1,17 @@
+{
+  "name": "portfolio-email-collector",
+  "version": "1.0.0",
+  "description": "Cloud Function to collect emails and save to Google Sheets",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.3.0",
+    "googleapis": "^128.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -15,7 +15,7 @@ const EmailForm = () => {
     try {
       // Use URL-encoded form data so the request stays "simple" and skips the CORS preflight.
       const body = new URLSearchParams({ email });
-      const response = await fetch('/api/add-email', {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbz2ygtZYYdVLldQOF4V3wJCTQiZYkJiNoQykewWj5WzooagaIiBRfx1Q8i4lcYRbejj/exec', {
         method: 'POST',
         body,
       });

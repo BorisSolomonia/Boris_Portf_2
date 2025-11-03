@@ -1,7 +1,7 @@
-import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { JWT } from 'google-auth-library';
+const { GoogleSpreadsheet } = require('google-spreadsheet');
+const { JWT } = require('google-auth-library');
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Only POST requests are allowed' });
   }
@@ -30,4 +30,4 @@ export default async function handler(req, res) {
     console.error(error);
     res.status(500).json({ message: 'Something went wrong' });
   }
-}
+};

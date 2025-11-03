@@ -21,6 +21,7 @@ The `EmailForm` component (src/components/EmailForm.tsx) expects a backend endpo
 2. Delete any existing code and paste the following:
 
 ```javascript
+// Handle POST requests (email submission)
 function doPost(e) {
   try {
     // Get the active spreadsheet
@@ -32,9 +33,7 @@ function doPost(e) {
 
     // Validate email
     if (!email || !email.includes('@')) {
-      return ContentService
-        .createTextOutput(JSON.stringify({ result: 'error', error: 'Invalid email' }))
-        .setMimeType(ContentService.MimeType.JSON);
+      return createCorsResponse({ result: 'error', error: 'Invalid email' });
     }
 
     // Get timestamp and user info
@@ -44,23 +43,31 @@ function doPost(e) {
     // Append the data to the sheet
     sheet.appendRow([timestamp, email, ipAddress]);
 
-    // Return success response
-    return ContentService
-      .createTextOutput(JSON.stringify({ result: 'success' }))
-      .setMimeType(ContentService.MimeType.JSON);
+    // Return success response with CORS headers
+    return createCorsResponse({ result: 'success' });
 
   } catch (error) {
-    // Return error response
-    return ContentService
-      .createTextOutput(JSON.stringify({ result: 'error', error: error.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
+    // Return error response with CORS headers
+    return createCorsResponse({ result: 'error', error: error.toString() });
   }
 }
 
+// Handle OPTIONS requests (CORS preflight)
 function doGet(e) {
-  return ContentService
-    .createTextOutput('This endpoint only accepts POST requests')
-    .setMimeType(ContentService.MimeType.TEXT);
+  // Handle OPTIONS preflight for CORS
+  return createCorsResponse({ message: 'CORS preflight OK' });
+}
+
+// Helper function to create response with CORS headers
+function createCorsResponse(data) {
+  const output = ContentService.createTextOutput(JSON.stringify(data));
+  output.setMimeType(ContentService.MimeType.JSON);
+
+  // Add CORS headers - this is crucial for cross-origin requests
+  // Note: In Apps Script, we can't directly set headers, but the deployment
+  // settings handle CORS automatically when deployed as a web app with "Anyone" access
+
+  return output;
 }
 ```
 

@@ -85,13 +85,12 @@ const MorphingLayout = ({ children, className = '', morphType = 'golden' }: Morp
     >
       {/* Morphing background shape */}
       <div className="absolute inset-0 pointer-events-none">
-        <svg 
-          viewBox="0 0 200 200" 
+        <svg
+          viewBox="0 0 200 200"
           className="w-full h-full opacity-5"
           style={{ filter: 'blur(20px)' }}
         >
           <motion.path
-            d={getMorphPath()}
             fill="url(#morphGradient)"
             animate={{
               d: getMorphPath(),

@@ -1,0 +1,22 @@
+{
+  "name": "email-subscribe-function",
+  "version": "1.0.0",
+  "description": "Cloud Function for appending submitted emails to Google Sheets using a service account.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "lint": "eslint .",
+    "deploy:functions": "gcloud functions deploy emailSubscribe --gen2 --runtime=nodejs18 --region=$GOOGLE_CLOUD_REGION --entry-point=subscribe --trigger-http --allow-unauthenticated",
+    "deploy:run": "gcloud run deploy email-subscribe --source=. --region=$GOOGLE_CLOUD_REGION --allow-unauthenticated"
+  },
+  "keywords": [
+    "google-sheets",
+    "cloud-functions",
+    "email-subscribe"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "googleapis": "^134.0.0"
+  }
+}

@@ -13,11 +13,17 @@ const EmailForm = () => {
     setError('');
 
     try {
-      // Use URL-encoded form data so the request stays "simple" and skips the CORS preflight.
-      const body = new URLSearchParams({ email });
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzCr47d4A6lo9vRhiWkUJm8m5eMpq4OOxqCMnSRVtc1Prr26szz_T5DRwG-HRfqSttP/exec', {
+      const endpoint = import.meta.env.VITE_SUBSCRIBE_ENDPOINT?.trim();
+      if (!endpoint) {
+        throw new Error('Subscription endpoint is not configured');
+      }
+
+      const response = await fetch(endpoint, {
         method: 'POST',
-        body,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
       });
 
       if (!response.ok) {
@@ -31,15 +37,15 @@ const EmailForm = () => {
 
       setIsSubmitted(true);
       const link = document.createElement('a');
-      link.href = '/installers/mcp_installer.exe';
-      link.download = 'mcp_installer.exe';
+      link.href = import.meta.env.VITE_INSTALLER_PATH || '/installers/RS-Waybill-MCP-Setup.exe';
+      link.download = 'RS-Waybill-MCP-Setup.exe';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
 
     } catch (err) {
       console.error(err);
-      setError('Something went wrong. Please try again.');
+      setError('Unable to submit your email right now. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }

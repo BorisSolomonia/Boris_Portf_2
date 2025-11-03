@@ -14,7 +14,8 @@
       "WebFetch(domain:ornate-dragon-82e353.netlify.app)",
       "WebFetch(domain:35.209.56.146)",
       "WebFetch(domain:github.com)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(git add:*)"
     ],
     "deny": []
   }

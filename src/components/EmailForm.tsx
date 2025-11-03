@@ -18,6 +18,8 @@ const EmailForm = () => {
         throw new Error('Subscription endpoint is not configured');
       }
 
+      console.log('Submitting email to subscribe endpoint', endpoint);
+
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -26,11 +28,15 @@ const EmailForm = () => {
         body: JSON.stringify({ email }),
       });
 
+      console.log('Subscribe endpoint responded', response.status);
+
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`);
       }
 
       const result = await response.json();
+      console.log('Subscribe endpoint payload', result);
+
       if (result.result !== 'success') {
         throw new Error(result.error || 'Unexpected response');
       }
@@ -44,7 +50,7 @@ const EmailForm = () => {
       document.body.removeChild(link);
 
     } catch (err) {
-      console.error(err);
+      console.error('Email submission failed', err);
       setError('Unable to submit your email right now. Please try again later.');
     } finally {
       setIsSubmitting(false);

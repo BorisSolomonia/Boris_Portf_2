@@ -15,7 +15,8 @@
       "WebFetch(domain:35.209.56.146)",
       "WebFetch(domain:github.com)",
       "WebSearch",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }

@@ -95,30 +95,52 @@ This guide will help you replace your current email collection with Google Forms
 
 ### Step 2.2: Get Email Field Entry ID
 
-**This is the tricky part - we need to find the field ID**:
+**BEST METHOD - View Page Source**:
 
 1. In your Google Form, click **Preview** (eye icon, top right)
-2. The form opens in a new tab
-3. **Right-click anywhere on the page** → **Inspect** (or press F12)
-4. In the DevTools, click the **Console** tab
-5. **Paste this code** and press Enter:
+2. The form opens in a new tab with your form
+3. **Right-click anywhere on the page** → **View Page Source** (or press Ctrl+U)
+4. A new tab opens with HTML source code
+5. Press **Ctrl+F** to open search
+6. Search for: `type="email"`
+7. You'll find a line like:
+   ```html
+   <input type="email" name="entry.123456789" ...>
+   ```
+8. **Copy the name value**: `entry.123456789`
+9. **Save this Entry ID** - you'll need it in Step 3.2
 
-```javascript
-document.querySelector('input[type="email"]').getAttribute('name')
-```
+**ALTERNATIVE METHOD - Network Tab**:
 
-6. You'll see output like: `entry.123456789`
-7. **Copy this value** (example: `entry.123456789`)
-8. **Save this Entry ID** - you'll need it in Step 3.2
+If the above doesn't show the name attribute:
 
-**Alternative method if above doesn't work**:
+1. In your Google Form **Preview**
+2. Press **F12** → **Network** tab
+3. Make sure "Preserve log" is checked ✓
+4. **Fill in any email** in the form (e.g., `test@test.com`)
+5. Click **Submit**
+6. In Network tab, look for a request to `formResponse`
+7. Click on it
+8. Go to **Payload** tab (or **Form Data**)
+9. You'll see: `entry.XXXXXXXXX: test@test.com`
+10. **Copy the entry ID**: `entry.XXXXXXXXX`
 
-1. In DevTools, click **Elements** tab
-2. Press Ctrl+F to search
-3. Search for: `type="email"`
-4. Find the `<input>` tag
-5. Look for `name="entry.XXXXXXXXX"`
-6. Copy the full entry ID
+**EASIEST METHOD - Pre-fill Link**:
+
+1. In your Google Form editor (not preview)
+2. Click the three dots (⋮) at top right
+3. Select **Get pre-filled link**
+4. Fill in the email field with any test value: `test@test.com`
+5. Click **Get link** at bottom
+6. Copy the URL you get
+7. The URL will look like:
+   ```
+   https://docs.google.com/forms/d/e/FORM_ID/viewform?usp=pp_url&entry.123456789=test@test.com
+   ```
+8. **Look for** `entry.XXXXXXXXX` in the URL
+9. **Copy that**: `entry.123456789`
+
+**Use whichever method works for you!**
 
 ---
 

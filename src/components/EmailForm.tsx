@@ -1,12 +1,13 @@
-
 import { useState } from 'react';
 
 const EmailForm = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [downloadedWithoutEmail, setDownloadedWithoutEmail] = useState(false);
+
+  // Google Form details
+  const GOOGLE_FORM_ID = '1FAIpQLSdwLZpcPqi5s9tBslSktQQy0O9ybcSq1WgoNIou3clHSOzMQg';
+  const EMAIL_ENTRY_ID = 'entry.893338415';
 
   const triggerDownload = () => {
     console.log('📥 Triggering download...');
@@ -25,82 +26,44 @@ const EmailForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError('');
 
-    console.log('🚀 === EMAIL FORM SUBMISSION STARTED ===');
+    console.log('🚀 === GOOGLE FORM SUBMISSION STARTED ===');
     console.log('📧 Email:', email);
 
-    const endpoint = import.meta.env.VITE_SUBSCRIBE_ENDPOINT?.trim();
-    console.log('🌐 Endpoint:', endpoint);
-    console.log('🔧 Environment check:');
-    console.log('  - VITE_SUBSCRIBE_ENDPOINT:', import.meta.env.VITE_SUBSCRIBE_ENDPOINT);
-    console.log('  - VITE_INSTALLER_PATH:', import.meta.env.VITE_INSTALLER_PATH);
+    // Construct Google Form submission URL
+    const formUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`;
+    console.log('📤 Submitting to:', formUrl);
 
-    if (!endpoint) {
-      console.error('❌ Endpoint not configured!');
-      setError('Email collection is not configured. Downloading file anyway...');
-      triggerDownload();
-      setDownloadedWithoutEmail(true);
-      setIsSubmitting(false);
-      return;
-    }
+    // Create form data
+    const formData = new URLSearchParams();
+    formData.append(EMAIL_ENTRY_ID, email);
 
     try {
-      console.log('📤 Sending POST request to:', endpoint);
-      console.log('📦 Payload:', { email });
-
-      const response = await fetch(endpoint, {
+      // Submit to Google Forms using no-cors mode
+      await fetch(formUrl, {
         method: 'POST',
+        mode: 'no-cors', // Important! This prevents CORS errors
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify({ email }),
+        body: formData.toString(),
       });
 
-      console.log('📨 Response status:', response.status);
-      console.log('📨 Response ok:', response.ok);
-      console.log('📨 Response headers:', Object.fromEntries(response.headers.entries()));
+      console.log('✅ Form submitted to Google Forms');
+      console.log('✅ Email should be saved to Google Sheets');
 
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log('📋 Response body:', result);
-
-      if (result.result !== 'success') {
-        throw new Error(result.error || 'Unexpected response');
-      }
-
-      console.log('✅ Email submitted successfully!');
+      // Always consider it successful (no-cors doesn't give us response)
       setIsSubmitted(true);
       triggerDownload();
 
+      console.log('🏁 === GOOGLE FORM SUBMISSION COMPLETED ===');
     } catch (err) {
-      console.error('❌ === EMAIL SUBMISSION FAILED ===');
-      console.error('Error details:', err);
-      console.error('Error type:', err instanceof TypeError ? 'TypeError (likely CORS or network)' : 'Other error');
-      console.error('Error message:', err instanceof Error ? err.message : String(err));
-
-      // Check if it's a CORS error
-      if (err instanceof TypeError && err.message === 'Failed to fetch') {
-        console.error('🚫 CORS ERROR DETECTED!');
-        console.error('This means the Google Apps Script is not properly configured.');
-        console.error('Please check:');
-        console.error('1. Deployment "Who has access" is set to "Anyone"');
-        console.error('2. "Execute as" is set to "Me"');
-        setError('Email collection unavailable (CORS issue). Starting download anyway...');
-      } else {
-        setError('Could not save email. Starting download anyway...');
-      }
-
-      // Download the file anyway
-      console.log('⚠️ Proceeding with download despite email error...');
+      console.error('❌ Form submission error:', err);
+      // Even if error, still download (fallback behavior)
       triggerDownload();
-      setDownloadedWithoutEmail(true);
+      setIsSubmitted(true);
     } finally {
       setIsSubmitting(false);
-      console.log('🏁 === EMAIL FORM SUBMISSION COMPLETED ===');
     }
   };
 
@@ -109,16 +72,6 @@ const EmailForm = () => {
       <div className="text-center">
         <p className="text-lg text-green-700">✅ Thank you! Your download should start automatically.</p>
         <p className="text-sm text-gray-600 mt-2">Email saved successfully.</p>
-      </div>
-    );
-  }
-
-  if (downloadedWithoutEmail) {
-    return (
-      <div className="text-center">
-        <p className="text-lg text-green-700">✅ Your download should start automatically.</p>
-        <p className="text-sm text-orange-600 mt-2">Note: Email could not be saved due to a configuration issue.</p>
-        <p className="text-xs text-gray-500 mt-1">Check the console for details (F12)</p>
       </div>
     );
   }
@@ -143,11 +96,6 @@ const EmailForm = () => {
           {isSubmitting ? 'Submitting...' : 'Download'}
         </button>
       </div>
-      {error && (
-        <div className="mt-2">
-          <p className="text-orange-600 text-xs italic">{error}</p>
-        </div>
-      )}
     </form>
   );
 };

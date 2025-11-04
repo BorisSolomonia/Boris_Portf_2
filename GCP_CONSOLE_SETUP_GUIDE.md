@@ -97,87 +97,168 @@ No command-line required! Follow these steps with screenshots of what to click.
 
 ### Step 3.1: Navigate to Cloud Functions
 
-1. Click the **☰ Navigation Menu** (top left)
-2. Scroll to **Cloud Functions** (under "Serverless" section)
-3. Click **Cloud Functions**
-4. If prompted "Enable API", click **ENABLE** (wait 1-2 minutes)
+**IMPORTANT**: Google has two interfaces for functions. Use **Method A** (recommended):
+
+#### **Method A: Cloud Functions Page** (Recommended)
+
+1. Click the **☰ Navigation Menu** (top left, three horizontal lines)
+2. In the menu, use the search box and type: **"Cloud Functions"**
+3. Click **Cloud Functions** from the results
+4. If you see "API not enabled", click **ENABLE** (wait 1-2 minutes)
+
+#### **Method B: Cloud Run Functions** (Alternative)
+
+1. Click **☰ Navigation Menu**
+2. Search for: **"Cloud Run"**
+3. Click **Cloud Run**
+4. You'll see tabs at top - click **FUNCTIONS** tab
+
+**For this guide, we'll use Method A (Cloud Functions page).**
 
 ### Step 3.2: Create Function
 
-1. Click **CREATE FUNCTION** (blue button at top)
-2. You'll see "Create function" configuration page
+**On the Cloud Functions page**:
 
-### Step 3.3: Configure Basics (1st Gen to 2nd Gen)
+1. Look for the blue button at the top that says **"CREATE FUNCTION"**
+   - If you don't see it, make sure you're on the "Functions" list page (not inside a function)
+   - The URL should look like: `console.cloud.google.com/functions/list`
 
-**Environment**:
-- Select: **2nd gen** (important!)
+2. Click **CREATE FUNCTION**
+
+3. You'll see the "Create function" configuration page with multiple tabs:
+   - Configuration (1st tab - currently active)
+   - Code (2nd tab - you'll use this later)
+
+### Step 3.3: Configure Basics
+
+**You're now on the Configuration tab of "Create function" page.**
+
+**Environment** (at the very top):
+- You'll see two options: **1st gen** | **2nd gen**
+- Select: **2nd gen** (click on it - it should highlight in blue)
+- ⚠️ **Important**: Make sure "2nd gen" is selected, not "1st gen"
+
+**Basics section**:
 
 **Function name**:
-- Enter: `portfolio-email-collector`
+- In the text field, enter: `portfolio-email-collector`
+- (No spaces, lowercase with hyphens)
 
 **Region**:
-- Select: **us-central1**
+- Click the dropdown menu
+- Scroll and select: **us-central1** (Iowa)
+- If you can't find it, type "central" in the search box
 
 ### Step 3.4: Configure Trigger
 
+**Scroll down to the "Trigger" section.**
+
 **Trigger type**:
-- Select: **HTTPS**
-- Click the **HTTPS** box
+- You'll see options: HTTPS | Cloud Pub/Sub | Eventarc | etc.
+- Click on **HTTPS** (it will highlight when selected)
 
-**Authentication**:
-- Select: **Allow unauthenticated invocations** ⚠️ (important for your website to access it)
+**Authentication** (important!):
+- Below the trigger type, you'll see authentication options
+- Find and check: **☑ Allow unauthenticated invocations**
+- ⚠️ **Critical**: This checkbox MUST be checked for your website to call the function
+- A warning may appear saying "This makes the function public" - that's OK, click **OK** if prompted
 
-**HTTPS settings** (if expanded):
-- Leave defaults
+**URL** (you'll see this after selecting HTTPS):
+- This will be auto-generated after deployment
+- You'll copy this later
 
 ### Step 3.5: Runtime Settings (Click to Expand)
 
-Click **RUNTIME, BUILD, CONNECTIONS AND SECURITY SETTINGS** (expand section)
+**Scroll down further. Look for a section that says:**
+**"RUNTIME, BUILD, CONNECTIONS AND SECURITY SETTINGS"** (it may be collapsed)
 
-**Runtime**:
-- **Memory allocated**: 256 MiB (default is fine)
-- **Timeout**: 60 seconds (default is fine)
-- **Runtime service account**: Click dropdown
-  - Select: `portfolio-email-collector@nine-tones-bots-2025-468320.iam.gserviceaccount.com`
-  - (The service account you created in Step 2)
+Click on this section to **expand** it (click the arrow or the text).
+
+**Once expanded, you'll see several subsections:**
+
+**Runtime** subsection:
+- **Memory allocated**: Leave as default (256 MiB is fine)
+- **Timeout**: Leave as default (60 seconds is fine)
+- **Maximum instances**: Leave as default (100 is fine)
+
+**Runtime service account** (important!):
+- Click the **Service account** dropdown menu
+- Scroll and find: `portfolio-email-collector@nine-tones-bots-2025-468320.iam.gserviceaccount.com`
+  - This is the service account you created in Part 2
+  - If you don't see it, type "portfolio" in the search box
+- Select it (click on it)
 
 ### Step 3.6: Environment Variables
 
-Scroll down to **Runtime environment variables**
+**Still in the expanded "RUNTIME, BUILD..." section:**
 
-Click **+ ADD VARIABLE**
+Scroll down until you see **"Runtime environment variables"**
 
-**Variable 1**:
-- **Name**: `NODE_ENV`
-- **Value**: `production`
+**Add Variable 1**:
+1. Click **+ ADD VARIABLE** button
+2. You'll see two text fields appear: "Name" and "Value"
+3. In **Name** field, type: `NODE_ENV`
+4. In **Value** field, type: `production`
 
-Click **+ ADD VARIABLE** again
+**Add Variable 2**:
+1. Click **+ ADD VARIABLE** again (another row appears)
+2. In **Name** field, type: `SPREADSHEET_ID`
+3. In **Value** field, paste: `YOUR_SPREADSHEET_ID_FROM_STEP_1.2`
+   - ⚠️ **REPLACE** with your actual spreadsheet ID (the long string from Step 1.2)
+   - Example: `1a2b3c4d5e6f7g8h9i0j_EXAMPLE`
 
-**Variable 2**:
-- **Name**: `SPREADSHEET_ID`
-- **Value**: `YOUR_SPREADSHEET_ID_FROM_STEP_1.2`
-  - ⚠️ Replace with your actual spreadsheet ID from Step 1.2
+**Add Variable 3** (optional):
+1. Click **+ ADD VARIABLE** again
+2. In **Name** field, type: `SHEET_NAME`
+3. In **Value** field, type: `Sheet1` (or whatever your sheet tab is named)
 
-**Variable 3** (optional):
-- **Name**: `SHEET_NAME`
-- **Value**: `Sheet1` (or your sheet tab name)
+**Verify your variables**:
+- You should now see 2-3 rows of environment variables
+- Each row has a Name and Value filled in
+- Double-check the SPREADSHEET_ID is correct!
 
-### Step 3.7: Click NEXT
+### Step 3.7: Review and Click NEXT
 
-Click the **NEXT** button (bottom right)
+**Before clicking NEXT, verify these settings:**
+
+✓ Environment: **2nd gen** selected
+✓ Function name: `portfolio-email-collector`
+✓ Region: `us-central1`
+✓ Trigger: **HTTPS** selected
+✓ Authentication: **Allow unauthenticated invocations** ☑ checked
+✓ Service account: `portfolio-email-collector@...` selected
+✓ Environment variables: `NODE_ENV` and `SPREADSHEET_ID` added
+
+**All correct?**
+
+1. Click the blue **NEXT** button (bottom right of the page)
+2. You'll move to the "Code" page (Step 3.8)
 
 ### Step 3.8: Configure Code
 
-You're now on the **Code** page
+**You're now on the "Code" tab/page.**
 
-**Runtime**:
-- Dropdown: Select **Node.js 20**
+You should see:
+- A code editor on the right
+- A file tree on the left showing `index.js` and `package.json`
+- Settings at the top
 
-**Entry point**:
-- Enter: `collectEmail`
+**Configure these settings:**
 
-**Source code**:
-- Select: **Inline Editor** (default)
+**Runtime** (dropdown at top):
+- Click the dropdown menu
+- Select: **Node.js 20** (or latest Node.js version available)
+- If you see Node.js 18 or 22, those are fine too
+
+**Entry point** (text field):
+- Find the "Entry point" field
+- Delete any existing text
+- Type: `collectEmail`
+- ⚠️ **Exact spelling**: lowercase 'c', capital 'E', no spaces
+
+**Source code** (usually pre-selected):
+- Make sure **Inline editor** is selected
+- (This should be the default - you'll edit code in the browser)
 
 ### Step 3.9: Add package.json
 

@@ -153,19 +153,30 @@ No command-line required! Follow these steps with screenshots of what to click.
 
 **Scroll down to the "Trigger" section.**
 
-**Trigger type**:
-- You'll see options: HTTPS | Cloud Pub/Sub | Eventarc | etc.
-- Click on **HTTPS** (it will highlight when selected)
+You'll see a **"Trigger"** heading with a dropdown or radio buttons showing these options:
+- **HTTPS** ← **SELECT THIS ONE**
+- Pub/Sub trigger
+- Cloud Storage trigger
+- Firestore trigger
+- Other Eventarc trigger
 
-**Authentication** (important!):
-- Below the trigger type, you'll see authentication options
-- Find and check: **☑ Allow unauthenticated invocations**
-- ⚠️ **Critical**: This checkbox MUST be checked for your website to call the function
-- A warning may appear saying "This makes the function public" - that's OK, click **OK** if prompted
+**What to do**:
+1. Click on **HTTPS** (the first option)
+2. It should highlight or show a radio button selected
 
-**URL** (you'll see this after selecting HTTPS):
-- This will be auto-generated after deployment
-- You'll copy this later
+**After selecting HTTPS, look for Authentication settings below:**
+
+**Authentication** (CRITICAL!):
+- Below the trigger selection, you'll see an authentication section
+- You should see a checkbox that says: **"Allow unauthenticated invocations"**
+- ☑ **CHECK THIS BOX** (very important!)
+- ⚠️ Without this, your website won't be able to call the function
+- If a warning appears saying "This makes the function publicly accessible", click **OK** or **Accept**
+
+**What you'll see**:
+- After selecting HTTPS and allowing unauthenticated access
+- A "URL" field will appear (but it will be empty until after deployment)
+- You'll copy this URL later in Step 3.12
 
 ### Step 3.5: Runtime Settings (Click to Expand)
 

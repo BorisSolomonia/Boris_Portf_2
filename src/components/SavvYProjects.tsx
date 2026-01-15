@@ -200,7 +200,7 @@ const SavvYProjects = () => {
             >
               {/* PPT Preview - Show actual cover or placeholder */}
               <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
-                {project.previewImage && project.isUploaded - (
+                {project.previewImage && project.isUploaded ? (
                   /* Show uploaded cover fully transparent */
                   <img 
                     src={project.previewImage} 
@@ -270,7 +270,7 @@ const SavvYProjects = () => {
               </span>
             </div>
           <div className="max-w-md mx-auto">
-            {isUploading - (
+            {isUploading ? (
               <>
                 <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Uploading...</h3>
@@ -450,7 +450,7 @@ const SavvYProjects = () => {
                                 key={index}
                                 onClick={() => goToPage(index)}
                                 className={`flex-shrink-0 w-12 h-9 border-2 rounded overflow-hidden transition-all hover:scale-105 ${
-                                  index === currentPage - 'border-blue-500' : 'border-gray-200'
+                                  index === currentPage ? 'border-blue-500' : 'border-gray-200'
                                 }`}
                               >
                                 <img 
@@ -513,7 +513,7 @@ const SavvYProjects = () => {
                         
                         <div className="text-center pt-4 border-t">
                           <p className="text-xs text-gray-400">
-                            {currentProject?.isUploaded - 
+                            {currentProject?.isUploaded ? 
                               'Uploaded presentation content (lightly blurred)' : 
                               'This content is blurred to protect confidential information'
                             }

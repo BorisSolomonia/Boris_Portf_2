@@ -453,10 +453,10 @@ jobs:
           docker network connect web $CONTAINER_NAME 2>/dev/null || echo "ℹ️ Container already on web network"
           
           echo "🔧 Updating Caddy configuration..."
-          docker exec caddy-caddy-1 caddy reload --config /etc/caddy/Caddyfile || {
+          docker exec caddy caddy reload --config /etc/caddy/Caddyfile || {
             echo "❌ Caddy reload failed, retrying..."
             sleep 5
-            docker exec caddy-caddy-1 caddy reload --config /etc/caddy/Caddyfile
+            docker exec caddy caddy reload --config /etc/caddy/Caddyfile
           }
           
           echo "✅ Deployment completed successfully!"
@@ -538,7 +538,7 @@ jobs:
           docker compose -f secure-docker-setup/docker-compose.yml --env-file secure-docker-setup/.env up -d --force-recreate portfolio-boris-app
           
           echo "🔧 Reloading Caddy..."
-          docker exec caddy-caddy-1 caddy reload --config /etc/caddy/Caddyfile
+          docker exec caddy caddy reload --config /etc/caddy/Caddyfile
           
           # Use consistent container name (matches Caddyfile expectations)
           CONTAINER_NAME="portfolio-boris-app"

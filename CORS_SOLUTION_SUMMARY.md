@@ -9,6 +9,7 @@
 
 ## Two Paths Forward
 
+
 ### Option 1: Fix Google Apps Script (Quick, 5 minutes)
 
 **Pros**: Simple, no code deployment needed

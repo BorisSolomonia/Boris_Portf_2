@@ -10,7 +10,7 @@ export const generateCoverPath = (file: DetectedFile): string => {
 
   // For now, return a placeholder or default cover
   // In a real implementation, this could trigger cover extraction from the first page
-  return customCoverPath
+  return encodeURI(customCoverPath)
 }
 
 // Extract metadata from filename
@@ -60,7 +60,7 @@ export const generateDescription = (file: DetectedFile): string => {
 // Check if a cover image exists
 export const checkCoverExists = async (coverPath: string): Promise<boolean> => {
   try {
-    const response = await fetch(coverPath, { method: 'HEAD' })
+    const response = await fetch(encodeURI(coverPath), { method: 'HEAD' })
     return response.ok
   } catch {
     return false
@@ -70,12 +70,12 @@ export const checkCoverExists = async (coverPath: string): Promise<boolean> => {
 // Get file icon based on type
 export const getFileIcon = (type: DetectedFile['type']): string => {
   const icons: Record<DetectedFile['type'], string> = {
-    pdf: '📄',
-    ppt: '📊',
-    pptx: '📊',
-    doc: '📝',
-    docx: '📝'
+    pdf: 'PDF',
+    ppt: 'PPT',
+    pptx: 'PPTX',
+    doc: 'DOC',
+    docx: 'DOCX'
   }
 
-  return icons[type] || '📄'
+  return icons[type] || 'FILE'
 }

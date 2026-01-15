@@ -94,22 +94,9 @@ const SavvYProjects = () => {
   const savvyProjects = [...staticProjects, ...uploadedProjects]
 
   const handleProjectClick = (projectId: string) => {
-    console.log('=== PROJECT CLICK DEBUG ===')
-    console.log('Project ID clicked:', projectId)
-    console.log('All projects:', savvyProjects.map(p => ({ id: p.id, title: p.title, isUploaded: p.isUploaded })))
-    console.log('Setting selectedProject to:', projectId)
-    console.log('Setting showBlurredView to: true')
-    
     setSelectedProject(projectId)
     setShowBlurredView(true)
     setCurrentPage(0)
-    
-    // Force a small delay to check states
-    setTimeout(() => {
-      console.log('After state update - selectedProject:', projectId)
-      console.log('After state update - showBlurredView should be true')
-      console.log('Modal element exists:', document.querySelector('[class*="fixed inset-0"]'))
-    }, 100)
   }
 
   const closeBlurredView = () => {
@@ -194,7 +181,7 @@ const SavvYProjects = () => {
           </div>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Business & Financial Consulting Projects<br />
-            <span className="text-sm font-medium text-blue-600">November 2019 - June 2021 · Full-time</span>
+            <span className="text-sm font-medium text-blue-600">November 2019 - June 2021 - Full-time</span>
           </p>
         </motion.div>
 
@@ -213,7 +200,7 @@ const SavvYProjects = () => {
             >
               {/* PPT Preview - Show actual cover or placeholder */}
               <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
-                {project.previewImage && project.isUploaded ? (
+                {project.previewImage && project.isUploaded - (
                   /* Show uploaded cover fully transparent */
                   <img 
                     src={project.previewImage} 
@@ -239,7 +226,7 @@ const SavvYProjects = () => {
                 {/* Upload badge for uploaded files */}
                 {project.isUploaded && (
                   <div className="absolute top-2 left-2 bg-green-600 text-white text-xs px-2 py-1 rounded-full">
-                    ✓ Uploaded
+                    Uploaded
                   </div>
                 )}
                 
@@ -252,7 +239,7 @@ const SavvYProjects = () => {
               <div className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-blue-600">{project.date}</span>
-                  <span className="text-xs text-gray-500">🔒 Confidential</span>
+                  <span className="text-xs text-gray-500">Confidential</span>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                   {project.title}
@@ -279,11 +266,11 @@ const SavvYProjects = () => {
           >
             <div className="mb-4">
               <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                👤 Admin Panel
+                Admin Panel
               </span>
             </div>
           <div className="max-w-md mx-auto">
-            {isUploading ? (
+            {isUploading - (
               <>
                 <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Uploading...</h3>
@@ -326,7 +313,7 @@ const SavvYProjects = () => {
             }}
             className="text-sm text-gray-500 hover:text-blue-600 transition-colors"
           >
-            {isAdmin ? '🔓 Exit Admin Mode' : '🔐 Enter Admin Mode'}
+            {isAdmin ? 'Exit Admin Mode' : 'Enter Admin Mode'}
           </button>
         </div>
 
@@ -351,7 +338,7 @@ const SavvYProjects = () => {
                     </div>
                     <div>
                       <p className="font-medium text-gray-900">{file.name}</p>
-                      <p className="text-sm text-gray-500">{formatFileSize(file.size)} · {file.uploadDate.toLocaleDateString()}</p>
+                      <p className="text-sm text-gray-500">{formatFileSize(file.size)} - {file.uploadDate.toLocaleDateString()}</p>
                     </div>
                   </div>
                   <button
@@ -392,7 +379,7 @@ const SavvYProjects = () => {
                   {savvyProjects.find(p => p.id === selectedProject)?.title || 'Project Presentation'}
                 </h3>
                 <p className="text-sm text-gray-600">
-                  SavvY Project · {savvyProjects.find(p => p.id === selectedProject)?.date || 'Unknown Date'}
+                  SavvY Project - {savvyProjects.find(p => p.id === selectedProject)?.date || 'Unknown Date'}
                 </p>
               </div>
               <button
@@ -410,11 +397,6 @@ const SavvYProjects = () => {
               <div className="relative bg-white rounded-xl overflow-hidden" style={{ minHeight: '600px' }}>
                 {(() => {
                   const currentProject = getCurrentProjectData()
-                  console.log('=== MODAL CONTENT DEBUG ===')
-                  console.log('Current project found:', currentProject)
-                  console.log('Has uploadedFile:', !!currentProject?.uploadedFile)
-                  console.log('Has allPages:', currentProject?.uploadedFile?.allPages?.length)
-                  console.log('Current page:', currentPage)
                   
                   if (currentProject?.uploadedFile?.allPages) {
                     // Show all pages with navigation for uploaded files
@@ -468,7 +450,7 @@ const SavvYProjects = () => {
                                 key={index}
                                 onClick={() => goToPage(index)}
                                 className={`flex-shrink-0 w-12 h-9 border-2 rounded overflow-hidden transition-all hover:scale-105 ${
-                                  index === currentPage ? 'border-blue-500' : 'border-gray-200'
+                                  index === currentPage - 'border-blue-500' : 'border-gray-200'
                                 }`}
                               >
                                 <img 
@@ -531,7 +513,7 @@ const SavvYProjects = () => {
                         
                         <div className="text-center pt-4 border-t">
                           <p className="text-xs text-gray-400">
-                            {currentProject?.isUploaded ? 
+                            {currentProject?.isUploaded - 
                               'Uploaded presentation content (lightly blurred)' : 
                               'This content is blurred to protect confidential information'
                             }

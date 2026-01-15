@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import financeManifest from '../generated/financeManifest.json'
 
 export interface DetectedFile {
   name: string
@@ -12,7 +13,9 @@ export interface DetectedFile {
 export const useFileWatcher = (watchPath: string) => {
   const [files, setFiles] = useState<DetectedFile[]>([])
   const [loading, setLoading] = useState(true)
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const initialLoadRef = useRef(true)
 
   const getFileType = (filename: string): DetectedFile['type'] => {
     const ext = filename.split('.').pop()?.toLowerCase()
@@ -48,19 +51,22 @@ export const useFileWatcher = (watchPath: string) => {
 
   const scanDirectory = async () => {
     try {
-      setLoading(true)
+      if (initialLoadRef.current) {
+        setLoading(true)
+      } else {
+        setIsRefreshing(true)
+      }
       setError(null)
 
-      // Load finance projects from the generated manifest
-      let knownFiles: string[] = []
+      const normalizedWatchPath = watchPath.replace(/\/$/, '')
 
-      try {
-        const manifestResponse = await fetch('/src/generated/financeManifest.json')
-        if (manifestResponse.ok) {
-          const manifest = await manifestResponse.json()
-          knownFiles = manifest.map((item: any) => item.filename)
-        }
-      } catch (manifestError) {
+      // Load finance projects from the generated manifest
+      const manifestEntries = Array.isArray(financeManifest) ? financeManifest : []
+      let knownFiles = manifestEntries
+        .map((item: { filename?: string }) => item.filename)
+        .filter((filename): filename is string => Boolean(filename))
+
+      if (knownFiles.length === 0) {
         // Fallback to hardcoded list if manifest is not available
         knownFiles = [
           'Almond - Financial Analysis.pdf',
@@ -83,14 +89,15 @@ export const useFileWatcher = (watchPath: string) => {
       // Check each known file
       for (const filename of knownFiles) {
         try {
-          const checkResponse = await fetch(`/projects/finance/protected/${filename}`, { method: 'HEAD' })
+          const filePath = `${normalizedWatchPath}/${encodeURIComponent(filename)}`
+          const checkResponse = await fetch(filePath, { method: 'HEAD' })
           if (checkResponse.ok) {
             const contentLength = checkResponse.headers.get('content-length')
             const lastModified = checkResponse.headers.get('last-modified')
 
             detectedFiles.push({
               name: filename,
-              path: `/projects/finance/protected/${filename}`,
+              path: filePath,
               displayName: generateDisplayName(filename),
               type: getFileType(filename),
               size: contentLength ? parseInt(contentLength) : 0,
@@ -109,6 +116,8 @@ export const useFileWatcher = (watchPath: string) => {
       console.error('Error scanning directory:', err)
     } finally {
       setLoading(false)
+      setIsRefreshing(false)
+      initialLoadRef.current = false
     }
   }
 
@@ -121,5 +130,5 @@ export const useFileWatcher = (watchPath: string) => {
     return () => clearInterval(interval)
   }, [watchPath])
 
-  return { files, loading, error, refetch: scanDirectory }
+  return { files, loading, isRefreshing, error, refetch: scanDirectory }
 }

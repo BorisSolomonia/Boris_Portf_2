@@ -77,7 +77,7 @@ const WorkPage = () => {
 
                 <button
                   onClick={() => {
-                    const recentSection = document.querySelector('[data-year="2025"]')
+                    const recentSection = document.querySelector('[data-year="2024"]')
                     recentSection?.scrollIntoView({ behavior: 'smooth', block: 'center' })
                   }}
                   className="group flex flex-col items-center"
@@ -90,7 +90,7 @@ const WorkPage = () => {
 
                 <button
                   onClick={() => {
-                    const futureSection = document.querySelector('[data-year="2025"]')
+                    const futureSection = document.querySelector('[data-year="2028"]')
                     futureSection?.scrollIntoView({ behavior: 'smooth', block: 'center' })
                   }}
                   className="group flex flex-col items-center"
@@ -149,11 +149,13 @@ const WorkPage = () => {
             >
               <span>Start a Conversation</span>
               <motion.span 
-                className="inline-block"
+                className="inline-flex"
                 animate={{ x: [0, 5, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                →
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-6-6l6 6-6 6" />
+                </svg>
               </motion.span>
             </Link>
           </motion.div>

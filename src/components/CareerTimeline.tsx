@@ -56,7 +56,7 @@ const TIMELINE: TimelineYear[] = [
     year: 2010,
     items: [
       {
-        title: "BBA – Financial Accounting & Audit",
+        title: "BBA - Financial Accounting & Audit",
         org: "Caucasus University",
         period: "2010",
         bullets: ["Foundation in financial reporting & audit standards."],
@@ -69,7 +69,7 @@ const TIMELINE: TimelineYear[] = [
       {
         title: "Financial Manager / Operations Manager",
         org: "Agency of Agricultural Projects Management",
-        period: "2016–2019",
+        period: "2016-2019",
         bullets: [
           "Designed streamlined financial processes.",
           "Managed complex project budgets and compliance.",
@@ -83,7 +83,7 @@ const TIMELINE: TimelineYear[] = [
     year: 2018,
     items: [
       {
-        title: "MBA – Business Administration & Ops Mgmt (Best Academic Achievement)",
+        title: "MBA - Business Administration & Ops Mgmt (Best Academic Achievement)",
         org: "Free University, Tbilisi",
         period: "2018",
       },
@@ -104,12 +104,12 @@ const TIMELINE: TimelineYear[] = [
       {
         title: "Senior Associate (Consulting)",
         org: "JSC SavvY",
-        period: "2019–2021",
+        period: "2019-2021",
         bullets: [
           "20+ engagements: valuation & FP&A models, driver trees, covenants.",
           "Executive dashboards & scenario analysis.",
         ],
-        metrics: ["NPV growth↑", "ROI growth↑", "Cost minimization↓"],
+        metrics: ["NPV growth up", "ROI growth up", "Cost minimization down"],
       },
     ],
   },
@@ -119,19 +119,19 @@ const TIMELINE: TimelineYear[] = [
       {
         title: "Lecturer of Managerial Accounting (ACCA F2)",
         org: "Ilia State University",
-        period: "2021–present",
+        period: "2021-present",
         bullets: ["Live cases, simulations; engagement-first pedagogy."],
       },
       {
         title: "CFO / Analyst of Monetary Policy",
         org: "Girchi (Parliament of Georgia)",
-        period: "2021–present",
+        period: "2021-present",
         bullets: [
           "Built finance policies & accounting app.",
           "Coin-flow logic: mid-period sales, emissions timing, entitlements.",
           "Auditable scenario engine for fairness.",
         ],
-        metrics: ["Sales maximization↑", "Cost minimization↓"],
+        metrics: ["Sales maximization up", "Cost minimization down"],
       },
     ],
   },
@@ -155,13 +155,13 @@ const TIMELINE: TimelineYear[] = [
       {
         title: "Chief Financial Officer",
         org: "9 Tones Distribution",
-        period: "2023–present",
+        period: "2023-present",
         bullets: [
           "Comprehensive financial strategy & CCC optimization.",
           "Statistical sales forecasting; reduced fixed costs ~5%.",
           "Daily ops dashboard: inventory, debtor scoring, alerts.",
         ],
-        metrics: ["Stock minimization↓", "Sales maximization↑", "ROI growth↑"],
+        metrics: ["Stock minimization down", "Sales maximization up", "ROI growth up"],
       },
     ],
   },
@@ -169,9 +169,9 @@ const TIMELINE: TimelineYear[] = [
     year: 2024,
     items: [
       {
-        title: "Debtors Analysis App · ERP Fin-Analytics",
+        title: "Debtors Analysis App - ERP Fin-Analytics",
         org: "Personal/Startup Tools",
-        period: "2024–2025",
+        period: "2024-2025",
         bullets: [
           "Cash-flow prediction, debtor scoring, explainable recommendations.",
           "ERP modules integrating AI for inventory & pricing analytics.",
@@ -203,7 +203,7 @@ const TIMELINE: TimelineYear[] = [
         bullets: [
           "Join a large AI-focused organization to leverage hybrid finance + tech expertise, delivering value-driven AI solutions",
           "Develop an ERP app integrating AI at key stages, connecting with government platforms",
-          "Advance Brooks — a geo-location social app where users leave notes, set future reminders, and share experiences tied to specific places",
+          "Advance Brooks - a geo-location social app where users leave notes, set future reminders, and share experiences tied to specific places",
         ],
         
       },
@@ -334,7 +334,7 @@ function TimelineItem({ year, isLast }: { year: TimelineYear; isLast: boolean })
                     <ul className="text-xs text-gray-700 space-y-1 mb-3">
                       {item.bullets.map((bullet, k) => (
                         <li key={k} className="flex items-start gap-2">
-                          <span className="text-gray-400 mt-1 flex-shrink-0">•</span>
+                          <span className="text-gray-400 mt-1 flex-shrink-0">-</span>
                           <span>{bullet}</span>
                         </li>
                       ))}

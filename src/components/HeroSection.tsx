@@ -12,10 +12,10 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
       <motion.div
         className="absolute inset-0 visionary-gradient"
         style={{
-          transform: `translateY(${scrollY * 0.5}px)`,
+          transform: `translateY(${scrollY * 0.5}px)`
         }}
       />
-      
+
       <div className="relative z-10 max-w-6xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Text content */}
@@ -23,14 +23,12 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
             <motion.div
               initial={{ opacity: 0, x: -100 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
+              transition={{ duration: 1.5, ease: 'easeOut' }}
               className="mb-8"
             >
-              <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+              <h1 className="text-5xl md:text-7xl font-serif-elegant text-renaissance-brown mb-6 leading-tight">
                 KAIZEN
-                <span className="block text-blue-600">
-                  Constant Improvement
-                </span>
+                <span className="block text-renaissance-blue">Constant Improvement</span>
               </h1>
             </motion.div>
 
@@ -38,7 +36,7 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.8, duration: 1.2 }}
-              className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed"
+              className="text-xl md:text-2xl text-renaissance-brown/70 mb-12 leading-relaxed"
             >
               Life has a meaning only then, when you are better than yesterday.
             </motion.p>
@@ -51,17 +49,19 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
             >
               <Link
                 to="/work"
-                className="group px-8 py-4 bg-blue-600 text-white rounded-lg transition-all hover:bg-blue-700 shadow-lg hover:shadow-xl"
+                className="group px-8 py-4 bg-renaissance-brown text-renaissance-cream rounded-lg transition-all hover:bg-renaissance-gold shadow-lg hover:shadow-xl"
                 aria-label="View portfolio work"
               >
                 <span className="flex items-center space-x-2">
                   <span className="font-semibold">See My Achievements</span>
                   <motion.span
-                    className="inline-block"
+                    className="inline-flex"
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
-                    →
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-6-6l6 6-6 6" />
+                    </svg>
                   </motion.span>
                 </span>
               </Link>
@@ -72,7 +72,7 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
           <motion.div
             initial={{ opacity: 0, x: 100, scale: 0.8 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ delay: 0.5, duration: 1.5, ease: "easeOut" }}
+            transition={{ delay: 0.5, duration: 1.5, ease: 'easeOut' }}
             className="flex flex-col items-center lg:items-end"
           >
             <PhotoFrame />
@@ -84,7 +84,7 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 2, duration: 0.6 }}
-              className="mt-6 px-4 py-2 bg-white text-gray-700 rounded-md shadow-md hover:shadow-lg transition-all text-sm border border-gray-200 hover:border-gray-300"
+              className="mt-6 px-4 py-2 bg-white text-renaissance-brown rounded-md shadow-md hover:shadow-lg transition-all text-sm border border-renaissance-gold/40 hover:border-renaissance-gold"
               aria-label="Download Boris's CV"
             >
               <span className="flex items-center space-x-2">

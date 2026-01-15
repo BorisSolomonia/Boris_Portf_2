@@ -19,21 +19,21 @@ type Certification = {
 const educationTimeline: EducationItem[] = [
   {
     period: '2018',
-    title: 'MBA – Business Administration & Operations Management',
+    title: 'MBA - Business Administration & Operations Management',
     institution: 'Free University, Tbilisi, Georgia',
     details: 'Recognized for Best Academic Achievement'
   },
   {
     period: '2010',
-    title: 'BBA – Financial Accounting and Audit',
+    title: 'BBA - Financial Accounting and Audit',
     institution: 'Caucasus University, Tbilisi, Georgia'
   },
 ]
 
 const certifications: Certification[] = [
   { title: 'BTA Certified Blockchain Business Foundations', issuer: 'Blockchain Training Alliance', image: '/files/CV/certificates/blockchaincert.jpeg' },
-  { title: 'ACCA Certification – Levels 1, 2, and 3', issuer: 'Association of Chartered Certified Accountants', image: '/files/CV/certificates/acca.png' },
-  { title: 'Best Academic Achievement – MBA', issuer: 'Free University, Tbilisi', image: '/files/CV/certificates/BestOM.jpeg' },
+  { title: 'ACCA Certification - Levels 1, 2, and 3', issuer: 'Association of Chartered Certified Accountants', image: '/files/CV/certificates/acca.png' },
+  { title: 'Best Academic Achievement - MBA', issuer: 'Free University, Tbilisi', image: '/files/CV/certificates/BestOM.jpeg' },
   { title: 'Bitcamp Certificate', issuer: 'EPAM / Bitcamp', image: '/images/bitcamp.png' },
 ]
 
@@ -93,7 +93,7 @@ const EducationPage = () => {
                     <span className="h-2.5 w-2.5 rounded-full bg-renaissance-gold"></span>
                   </span>
                   <h3 className="text-lg font-serif-elegant text-renaissance-brown">{item.title}</h3>
-                  <div className="text-sm text-renaissance-brown/60 font-sans-elegant">{item.institution} • {item.period}</div>
+                  <div className="text-sm text-renaissance-brown/60 font-sans-elegant">{item.institution} - {item.period}</div>
                   {item.details && (
                     <p className="mt-2 text-renaissance-blue/80 font-sans-elegant">{item.details}</p>
                   )}
@@ -123,7 +123,7 @@ const EducationPage = () => {
                   <div className="p-4">
                     <div className="text-renaissance-brown font-serif-elegant font-semibold">{c.title}</div>
                     {(c.issuer || c.year) && (
-                      <div className="text-sm text-renaissance-brown/60 font-sans-elegant">{[c.issuer, c.year].filter(Boolean).join(' • ')}</div>
+                      <div className="text-sm text-renaissance-brown/60 font-sans-elegant">{[c.issuer, c.year].filter(Boolean).join(' - ')}</div>
                     )}
                     {c.link && (
                       <a href={c.link} target="_blank" rel="noreferrer" className="inline-block mt-3 text-blue-600 hover:underline font-sans-elegant text-sm">View credential</a>

@@ -164,18 +164,18 @@ const DynamicFinanceProject = ({ file, index }: DynamicFinanceProjectProps) => {
           <body>
             <div class="container">
               <div class="header">
-                <h1>${getFileIcon(file.type)} ${file.displayName}</h1>
+                <h1>${file.displayName}</h1>
                 <p>${generateDescription(file)}</p>
                 <div class="file-info">
-                  <span>📁 ${file.type.toUpperCase()}</span>
-                  <span>📊 Finance Project</span>
-                  <span>🔒 Protected Content</span>
+                  <span>${file.type.toUpperCase()}</span>
+                  <span>Finance Project</span>
+                  <span>Protected Preview</span>
                 </div>
               </div>
 
               <div class="content">
                 <div class="blur-notice">
-                  <h3>🔒 Protected Finance Document</h3>
+                  <h3>Protected Finance Document</h3>
                   <p><strong>Document:</strong> ${file.displayName}</p>
                   <p><strong>Type:</strong> ${generateDescription(file)}</p>
                   <p><em>Content is blurred for confidentiality. This is a portfolio preview demonstrating document management capabilities.</em></p>
@@ -213,7 +213,7 @@ const DynamicFinanceProject = ({ file, index }: DynamicFinanceProjectProps) => {
       onClick={openProjectWindow}
     >
       {/* Cover Image or Default Display */}
-      <div className="relative h-48 bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="relative h-48 bg-gradient-to-br from-renaissance-cream/70 to-renaissance-blue/10">
         {coverImage && !imageError ? (
           <img
             src={coverImage}
@@ -224,8 +224,8 @@ const DynamicFinanceProject = ({ file, index }: DynamicFinanceProjectProps) => {
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <div className="text-center">
-              <div className="text-4xl mb-2">{getFileIcon(file.type)}</div>
-              <div className="text-sm text-gray-600 px-4">
+              <div className="text-2xl font-semibold text-renaissance-brown/80 mb-2">{getFileIcon(file.type)}</div>
+              <div className="text-sm text-renaissance-brown/70 px-4">
                 {file.type.toUpperCase()} Document
               </div>
             </div>
@@ -234,7 +234,7 @@ const DynamicFinanceProject = ({ file, index }: DynamicFinanceProjectProps) => {
 
         {/* File type badge */}
         <div className="absolute top-3 right-3">
-          <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full font-medium">
+          <span className="bg-renaissance-brown text-white text-xs px-2 py-1 rounded-full font-medium">
             {file.type.toUpperCase()}
           </span>
         </div>
@@ -246,7 +246,7 @@ const DynamicFinanceProject = ({ file, index }: DynamicFinanceProjectProps) => {
             whileHover={{ opacity: 1, scale: 1 }}
             className="bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
           >
-            <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-renaissance-brown/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
@@ -257,23 +257,22 @@ const DynamicFinanceProject = ({ file, index }: DynamicFinanceProjectProps) => {
       {/* Project Info */}
       <div className="p-6">
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-lg">{getFileIcon(file.type)}</span>
-          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
-            Auto-Generated
+          <span className="text-xs bg-renaissance-gold/20 text-renaissance-brown px-2 py-1 rounded-full font-medium">
+            Auto-generated
           </span>
         </div>
 
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+        <h3 className="text-lg font-semibold text-renaissance-brown mb-2 group-hover:text-renaissance-brown transition-colors">
           {file.displayName}
         </h3>
 
-        <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+        <p className="text-sm text-renaissance-brown/70 mb-3 line-clamp-2">
           {generateDescription(file)}
         </p>
 
-        <div className="flex items-center justify-between text-xs text-gray-500">
-          <span>📁 {(file.size / 1024).toFixed(1)} KB</span>
-          <span>🕒 {file.lastModified.toLocaleDateString()}</span>
+        <div className="flex items-center justify-between text-xs text-renaissance-brown/60">
+          <span>Size: {(file.size / 1024).toFixed(1)} KB</span>
+          <span>Updated: {file.lastModified.toLocaleDateString()}</span>
         </div>
       </div>
     </motion.div>

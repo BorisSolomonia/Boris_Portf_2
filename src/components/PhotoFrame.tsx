@@ -15,6 +15,17 @@ const PhotoFrame = () => {
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
+        {/* Email label above the photo */}
+        <motion.a
+          href="mailto:borissolomonia@gmail.com"
+          className="absolute -top-10 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-blue-100 bg-white/90 px-4 py-1.5 text-sm font-medium text-blue-700 shadow-md backdrop-blur-sm hover:text-blue-900"
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.4 }}
+        >
+          borissolomonia@gmail.com
+        </motion.a>
+
         {/* Outer frame - contemporary minimal border */}
         <div className="relative w-80 h-80 mx-auto">
           {/* Animated border elements */}

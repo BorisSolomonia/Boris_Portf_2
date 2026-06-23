@@ -357,15 +357,19 @@ jobs:
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
         timeout: 120s
-        command_timeout: 300s
+        command_timeout: 1200s
         script: |
           set -e
-          
+
           APP_NAME="${{ env.APP_NAME }}"
           PROJECT_ID="${{ env.PROJECT_ID }}"
           REGION="${{ env.REGION }}"
           IMAGE_PATH="${{ env.IMAGE_PATH }}"
           COMMIT_SHA="${{ github.sha }}"
+
+          # Give Docker/Compose long timeouts so slow Artifact Registry pulls don't abort
+          export DOCKER_CLIENT_TIMEOUT=900
+          export COMPOSE_HTTP_TIMEOUT=900
           
           echo "🚀 Deploying $APP_NAME..."
           echo "📍 Image: $IMAGE_PATH:$COMMIT_SHA"
@@ -431,9 +435,12 @@ jobs:
           echo "🔍 Image reference in compose file:"
           grep "image:" secure-docker-setup/docker-compose.yml
           
-          echo "📦 Pulling latest image..."
+          echo "📦 Pre-pulling image explicitly (shows progress, fails fast)..."
+          docker pull "$IMAGE_PATH:$COMMIT_SHA"
+
+          echo "📦 Pulling via compose..."
           docker compose -f secure-docker-setup/docker-compose.yml --env-file secure-docker-setup/.env pull portfolio-boris-app
-          
+
           echo "🔄 Deploying application..."
           docker compose -f secure-docker-setup/docker-compose.yml --env-file secure-docker-setup/.env up -d --force-recreate portfolio-boris-app
           
@@ -515,23 +522,30 @@ jobs:
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
         timeout: 120s
-        command_timeout: 300s
+        command_timeout: 1200s
         script: |
           set -e
 
           APP_NAME="${{ env.APP_NAME }}"
           IMAGE_PATH="${{ env.IMAGE_PATH }}"
-          
+
+          # Give Docker/Compose long timeouts so slow Artifact Registry pulls don't abort
+          export DOCKER_CLIENT_TIMEOUT=900
+          export COMPOSE_HTTP_TIMEOUT=900
+
           echo "❌ Deployment failed, initiating rollback..."
           echo "📍 Rolling back to: $IMAGE_PATH:latest"
-          
+
           cd /opt/$APP_NAME
-          
+
           # Rollback to latest tag
           sed -i "s|:${{ github.sha }}|:latest|g" secure-docker-setup/docker-compose.yml
-          
+
           echo "🔄 Rolling back to previous version..."
-          echo "📦 Pulling fallback image..."
+          echo "📦 Pre-pulling fallback image explicitly..."
+          docker pull "$IMAGE_PATH:latest"
+
+          echo "📦 Pulling fallback image via compose..."
           docker compose -f secure-docker-setup/docker-compose.yml --env-file secure-docker-setup/.env pull portfolio-boris-app
 
           echo "🔄 Recreating services with fallback image..."

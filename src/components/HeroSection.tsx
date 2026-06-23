@@ -79,8 +79,8 @@ const HeroSection = ({ scrollY }: HeroSectionProps) => {
 
             {/* Download CV Button */}
             <motion.a
-              href="/files/CV/Boris_Solomonia_Finance_CV_02082025.pdf"
-              download="Boris_Solomonia_Finance_CV.pdf"
+              href="/files/CV/Boris_Solomonia_Resume_19062026.pdf"
+              download="Boris_Solomonia_Resume.pdf"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 2, duration: 0.6 }}
